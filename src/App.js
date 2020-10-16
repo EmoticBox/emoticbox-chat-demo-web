@@ -1,35 +1,57 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import MessageBox from './Component/MessageBox.js'
-import phoneImage from './Img/phone_mock_up.png'
-import backCircle from './Img/back_circle.png'
+import PhoneImage from './Img/phone_mock_up.png'
+import BackCircle from './Img/back_circle.png'
+import Emoticon from './Img/emoticon.png'
+let isOpen = false;
 class App extends Component {
+  
   state = {
     message: '',
+    isUser: true,
     messageList: [],
+    date: '',
   };
   num = 0;
 
-  handleChange = (e) => {
+  _handleChange = (e) => {
+    
     this.setState({
-      message: e.target.value
+      message: e.target.value.length < 18 ? e.target.value : e.target.value //.toString().substring(0,18)
     });
   };
   
-  handleCreate = () => {
+  _sendMessage = () => {
     const { message, messageList } = this.state;
+    const date = new Date();
     this.setState({
       messageList: messageList.concat({
-        message: message
+        message: message,
+        isUser: true,
+        date: (date.getHours() > 12) ? `오후 ${date.getHours()-12}:${date.getMinutes()}` : `오전 ${date.getHours()}:${date.getMinutes()}`
       }), 
       message: '',
     });
   };
+  _handleEmoticonView = () => {
+    if (isOpen){
+      document.getElementById('section').style.height = "490px";
+      document.getElementById('footer').style.height = "40px";
+    } else {
+      document.getElementById('section').style.height = "360px";
+      document.getElementById('footer').style.height = "170px";
+    }
+    isOpen = !isOpen;
+  }
   componentDidMount() {
     const { messageList } = this.state;
+    const date = new Date();
     this.setState({
       messageList: messageList.concat({
-        message: `Emoticbox 이모티콘을 이용해보세요!`
+        message: `Emoticbox 이모티콘을 이용해보세요!`,
+        isUser: false,
+        date: (date.getHours() > 12) ? `오후 ${date.getHours()-12}:${date.getMinutes()}` : `오전 ${date.getHours()}:${date.getMinutes()}`
       }), 
       message: '',
     });
@@ -44,26 +66,25 @@ class App extends Component {
           <Header>
             <Title>Default</Title>
           </Header>
-
-          <Section>
+ 
+          <Section id="section">
             <ChatList>
               <Chats>
                 { messageList.map((item, index) => {
-                  return (
-                    <MessageBox key={index} message={item.message}/>
-                  );
+                  return ( <MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date}/> );
                 })}
               </Chats>
             </ChatList>
           </Section>
 
-          <Footer>
+          <Footer id="footer">
             <InputMessage 
               placeholder="메세지를 입력해주세요."
-              onChange={this.handleChange}
+              onChange={this._handleChange}
               value={message}
             />
-            <SendButton onClick={this.handleCreate}>전송</SendButton>
+            <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon}/></EmoticonButton>
+            <SendButton onClick={this._sendMessage}>전송</SendButton>
           </Footer>
 
         </Viewer>
@@ -75,7 +96,7 @@ class App extends Component {
 const Background = styled.div`
   width: 650px;
   height: 650px;
-  background-image: url(${backCircle});
+  background-image: url(${BackCircle});
 `
 // Viewer
 const Viewer = styled.div`
@@ -84,7 +105,7 @@ const Viewer = styled.div`
   width: 326px;
   height: 700px;  
   padding: 51px 12px;
-  background-image: url(${phoneImage});
+  background-image: url(${PhoneImage});
 `
 
 // Header
@@ -120,7 +141,9 @@ const ChatList = styled.div`
   };
 `
 const Chats = styled.ul`
+
   list-style: none;
+
   margin: 0px;
   padding: 0px;
   pointer-events: none;
@@ -160,10 +183,26 @@ const SendButton = styled.button`
   float: right;
   width: 42px;
   height: 25px;
-  top: 7px;
+  top: 8px;
   color: #ffffff;
   border: 1px solid #36BCD6;
   background: #36BCD6;
   border-radius: 3px;
+`
+
+const EmoticonButton = styled.a`
+  position: absolute;
+  display: inline-block;
+  margin-left:-80px;
+  width: 20px;
+  height: 20px;
+  top: 10px;
+  
+  padding: 0;
+`
+
+const ButtonImg = styled.img`
+  margin: 0;
+  padding: 0;
 `
 export default App;

@@ -1,40 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
-const MessageBox = ({message},) => {
+const MessageBox = ({message, isUser, date}) => {
+  
+  console.log("test " + date);
+  
+  if (isUser === true){
     return (
-      
+      <Chat>
+          {/* <Icon/> */}
+          <MessageRight>
+              {/* <NickName>Emoticbox</NickName> */}
+              <Time>{date}</Time><MessageText>{message}</MessageText>
+          </MessageRight>
+      </Chat>
+  );
+  } else {
+    return (
         <Chat>
             {/* <Icon/> */}
-            <Message>
+            <MessageLeft>
                 {/* <NickName>Emoticbox</NickName> */}
-                <MessageText>{message}</MessageText><Time>오전 10:02</Time>
-            </Message>
+                <MessageForm><ExampleText>{message}</ExampleText><Time>{date}</Time></MessageForm>
+            </MessageLeft>
         </Chat>
     );
+  }
 };
-const MessageText = styled.div`
-  display: inline-block;
-  
-  color: rgba(0, 0, 0, 0.47);
-  
-  word-break:break-all;
-  margin: 0;
-  height: auto;
-  max-width: 200px;
-  padding: 5px 10px;
-
-  background-color: white;
-  border: 1px solid white;
-  border-radius: 3px;
-  box-shadow: 0 1px #aabcc5;
-`
 
 const Chat = styled.li`
   display: block;
-  overflow: hidden;
   list-style: none;
-  height: auto;
-  margin: 10px;
+  margin-bottom: 10px;
 `
 const Icon = styled.span`
   display: block;
@@ -43,22 +39,63 @@ const Icon = styled.span`
   float: left;
   background-color: #0f0f0f;
 `
-const Message = styled.div`
-  display: inline-block;
+const MessageLeft = styled.div`
+  display: block;
   margin-left: 10px;
-  height: 17px;
   font-size: 12px;
-  float: left;
   align-items: center;
-  text-align: center;
+  text-align: left
+`
+const MessageRight = styled.div`
+display: block;
+margin-right: 10px;
+font-size: 12px;
+align-items: center;
+text-align: right
+`
+const MessageForm = styled.p`
 `
 const Time = styled.span`
   vertical-align: bottom;
   margin-left: 7px;
-  height: 27px;
+  margin-right: 7px;
   font-size: 8px;
   text-align: center;
 `
+const ExampleText = styled.span`
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.47);
+
+  word-break:break-all;
+  margin: 0;
+
+  max-width: 200px;
+  padding: 5px 10px;
+  text-align: left;
+
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 3px;
+  box-shadow: 0 1px #aabcc5;
+`
+const MessageText = styled.span`
+  
+  display: inline-block;
+  color: #ffffff;
+  
+  word-break:break-all;
+  margin: 0;
+  
+  max-width: 200px;
+  padding: 5px 10px;
+  text-align: left;
+
+  background-color: #2DD5B2;
+  border: 1px solid #2DD5B2;
+  border-radius: 3px;
+  box-shadow: 0 1px #aabcc5;
+`
+
 const NickName = styled.div`
   display: block;
   font-size: 13px;
