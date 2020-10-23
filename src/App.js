@@ -1,48 +1,75 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import MessageBox from './Component/MessageBox.js'
+
+// images
 import PhoneImage from './Img/phone_mock_up.png'
 import BackCircle from './Img/back_circle.png'
 import Emoticon from './Img/emoticon.png'
+
+// components
+import MessageBox from './Component/MessageBox.js'
+import EmoticonList from './Component/EmoticonList.js'
+import EmoticonPreview  from './Component/EmoticonPreview.js'
+
 let isOpen = false;
 class App extends Component {
-  
+
   state = {
     message: '',
     isUser: true,
     messageList: [],
     date: '',
+    visible: false,
+    selectedId: 0,
   };
   num = 0;
 
   _handleChange = (e) => {
-    
+
     this.setState({
       message: e.target.value.length < 18 ? e.target.value : e.target.value //.toString().substring(0,18)
     });
   };
-  
+
   _sendMessage = () => {
-    const { message, messageList } = this.state;
+    const { message, messageList, selectedId } = this.state;
     const date = new Date();
+    console.log("selected " + selectedId);
     this.setState({
       messageList: messageList.concat({
         message: message,
         isUser: true,
-        date: (date.getHours() > 12) ? `오후 ${date.getHours()-12}:${date.getMinutes()}` : `오전 ${date.getHours()}:${date.getMinutes()}`
-      }), 
+        date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
+        emoticonId: selectedId
+      }),
       message: '',
     });
   };
+  _formatMinutes = (time) => {
+    return time < 10 ? `0${time}` : time;
+  }
   _handleEmoticonView = () => {
-    if (isOpen){
-      document.getElementById('section').style.height = "490px";
+    if (isOpen) {
+      if (this.state.visible === true) this._onClickEmoticon();
+      document.getElementById('section').style.height = "480px";
       document.getElementById('footer').style.height = "40px";
     } else {
-      document.getElementById('section').style.height = "360px";
-      document.getElementById('footer').style.height = "170px";
+      document.getElementById('section').style.height = "260px";
+      document.getElementById('footer').style.height = "260px";
     }
     isOpen = !isOpen;
+  }
+  _onClickEmoticon = (index) => {
+    const {visible} = this.state;
+    this.setState({
+      visible: !visible,
+      selectedId: index,
+    })
+
+    if (visible === true)
+      document.getElementById('section').style.height = "260px";
+    else
+      document.getElementById('section').style.height = "170px";
   }
   componentDidMount() {
     const { messageList } = this.state;
@@ -51,14 +78,15 @@ class App extends Component {
       messageList: messageList.concat({
         message: `Emoticbox 이모티콘을 이용해보세요!`,
         isUser: false,
-        date: (date.getHours() > 12) ? `오후 ${date.getHours()-12}:${date.getMinutes()}` : `오전 ${date.getHours()}:${date.getMinutes()}`
-      }), 
+        date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
+        emoticonId: 0,
+      }),
       message: '',
     });
   }
 
   render() {
-    const {messageList, message} = this.state;
+    const { messageList, message } = this.state;
     return (
       <Background>
         <Viewer>
@@ -66,25 +94,26 @@ class App extends Component {
           <Header>
             <Title>Default</Title>
           </Header>
- 
+
           <Section id="section">
             <ChatList>
               <Chats>
-                { messageList.map((item, index) => {
-                  return ( <MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date}/> );
+                {messageList.map((item, index) => {
+                  return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} />);
                 })}
               </Chats>
             </ChatList>
           </Section>
-
+          <EmoticonPreview visible={this.state.visible} index={this.state.selectedId}></EmoticonPreview>
           <Footer id="footer">
-            <InputMessage 
+            <InputMessage
               placeholder="메세지를 입력해주세요."
               onChange={this._handleChange}
               value={message}
             />
-            <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon}/></EmoticonButton>
+            <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
             <SendButton onClick={this._sendMessage}>전송</SendButton>
+            <EmoticonList onClick={this._onClickEmoticon}/>
           </Footer>
 
         </Viewer>
@@ -103,7 +132,7 @@ const Viewer = styled.div`
   margin-left: auto;
   margin-right: auto;
   width: 326px;
-  height: 700px;  
+  height: 598px;  
   padding: 51px 12px;
   background-image: url(${PhoneImage});
 `
@@ -152,10 +181,12 @@ const Chats = styled.ul`
 // Footer
 const Footer = styled.div`
   height: 40px;
-  
+  overflow: hidden;
   position: relative;
   background: #ffffff;
   border-radius: 0px 0px 7px 7px;
+  clear: right;
+
 `
 const InputMessage = styled.input`
   float:left;

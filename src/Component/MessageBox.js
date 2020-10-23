@@ -1,10 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-const MessageBox = ({message, isUser, date}) => {
-  
-  console.log("test " + date);
-  
-  if (isUser === true){
+import ApngComponent from 'react-apng';
+const MessageBox = ({message, isUser, date, emoticonId}) => {
+  console.log("test " + emoticonId);
+  if (Number(emoticonId) > 0){
+    const apic1 = require(`../Emoticons/cutePig/apng/${emoticonId}.png`);
+    return (
+      <Chat>
+          {/* <Icon/> */}
+          <MessageRight>
+              {/* <NickName>Emoticbox</NickName> */}
+              <MessageForm><Time>{date}</Time><ApngComponent autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
+          </MessageRight>
+      </Chat>
+    );
+  }
+  else if (isUser === true){
     return (
       <Chat>
           {/* <Icon/> */}
@@ -13,7 +24,7 @@ const MessageBox = ({message, isUser, date}) => {
               <Time>{date}</Time><MessageText>{message}</MessageText>
           </MessageRight>
       </Chat>
-  );
+    );
   } else {
     return (
         <Chat>
@@ -47,11 +58,11 @@ const MessageLeft = styled.div`
   text-align: left
 `
 const MessageRight = styled.div`
-display: block;
-margin-right: 10px;
-font-size: 12px;
-align-items: center;
-text-align: right
+  display: block;
+  margin-right: 10px;
+  font-size: 12px;
+  align-items: center;
+  text-align: right
 `
 const MessageForm = styled.p`
 `
