@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useRef, userEffect } from 'react';
 import styled from 'styled-components';
 
 // images
@@ -12,27 +12,64 @@ import EmoticonList from './Component/EmoticonList.js'
 import EmoticonPreview  from './Component/EmoticonPreview.js'
 
 let isOpen = false;
+const date = new Date();
 class App extends Component {
+  
+  ScrollRef = React.createRef();
 
   state = {
     message: '',
     isUser: true,
-    messageList: [],
+    messageList: [
+      {
+        message: "안녕하세요! 좋은 아침입니다~",
+        isUser: false,
+        date: '오후 02:30',
+        // (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`
+      },
+      {
+        message: "어제 부탁드린 일은 완료됐나요?",
+        isUser: false,
+        date: '오후 02:30',
+      },
+    ],
     date: '',
     visible: false,
     selectedId: 0,
   };
-  num = 0;
-
+  
+  componentDidUpdate() {
+    this._scrollToBottom();
+  }
+  componentDidMount() {
+    
+  }
+  _scrollToBottom = () => {
+    this.el.scrollIntoView({ behavior: 'smooth' });
+  };
+  
   _handleChange = (e) => {
 
     this.setState({
       message: e.target.value.length < 18 ? e.target.value : e.target.value //.toString().substring(0,18)
     });
   };
-
+  // 받는 메세지 추가
+  _addMessage = (message) => {
+    const { messageList } = this.state;
+    const date = new Date();
+    this.setState({
+      messageList: messageList.concat({
+        message: message,
+        isUser: false,
+        date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
+        emoticonId: 0,
+      }),
+    });
+  }
+  // 보내는 메세지 추가
   _sendMessage = () => {
-    const { message, messageList, selectedId } = this.state;
+    const { message, messageList, selectedId, visible } = this.state;
     const date = new Date();
     console.log("selected " + selectedId);
     this.setState({
@@ -40,13 +77,23 @@ class App extends Component {
         message: message,
         isUser: true,
         date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
-        emoticonId: selectedId
+        emoticonId: selectedId,
       }),
       message: '',
+      selectedId: 0,
+      visible: false,
     });
+    if (visible === true) this._openCloseEmoticionView();
   };
   _formatMinutes = (time) => {
     return time < 10 ? `0${time}` : time;
+  }
+  _openCloseEmoticionView = () => {
+    const {visible} = this.state;
+    if (visible === true)
+      document.getElementById('section').style.height = "260px";
+    else
+      document.getElementById('section').style.height = "170px";
   }
   _handleEmoticonView = () => {
     if (isOpen) {
@@ -65,25 +112,9 @@ class App extends Component {
       visible: !visible,
       selectedId: index,
     })
-
-    if (visible === true)
-      document.getElementById('section').style.height = "260px";
-    else
-      document.getElementById('section').style.height = "170px";
+    this._openCloseEmoticionView();
   }
-  componentDidMount() {
-    const { messageList } = this.state;
-    const date = new Date();
-    this.setState({
-      messageList: messageList.concat({
-        message: `Emoticbox 이모티콘을 이용해보세요!`,
-        isUser: false,
-        date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
-        emoticonId: 0,
-      }),
-      message: '',
-    });
-  }
+  
 
   render() {
     const { messageList, message } = this.state;
@@ -97,10 +128,11 @@ class App extends Component {
 
           <Section id="section">
             <ChatList>
-              <Chats>
+              <Chats >
                 {messageList.map((item, index) => {
                   return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} />);
                 })}
+                <div ref={el => {this.el = el;}} />
               </Chats>
             </ChatList>
           </Section>

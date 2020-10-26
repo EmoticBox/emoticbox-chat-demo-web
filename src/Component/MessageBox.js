@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import ApngComponent from 'react-apng';
 const MessageBox = ({message, isUser, date, emoticonId}) => {
-  console.log("test " + emoticonId);
   if (Number(emoticonId) > 0){
     const apic1 = require(`../Emoticons/cutePig/apng/${emoticonId}.png`);
     return (
