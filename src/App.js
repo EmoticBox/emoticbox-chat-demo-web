@@ -1,4 +1,4 @@
-import React, { Component, useState, useRef, userEffect } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 // images
@@ -7,6 +7,7 @@ import BackCircle from './Img/back_circle.png'
 import Emoticon from './Img/emoticon.png'
 import Connections from './Img/connections.png'
 import Search from './Img/search.png'
+import EmoticboxLogo from './Img/emoticBox.png'
 
 // components
 import MessageBox from './Component/MessageBox.js'
@@ -130,60 +131,100 @@ class App extends Component {
   render() {
     const { messageList, message } = this.state;
     return (
-      <Background>
-        <Viewer>
-          <Header>
-            <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
-            <LineB><Arrows>&lt;</Arrows><LabelLeft>Developer JH</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
-          </Header>
+      <Page>
+        <Title>EmoticBox Solution Demo</Title>
+        <Background>
+          <Viewer>
+            <Header>
+              <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
+              <LineB><Arrows>&lt;</Arrows><LabelLeft>Developer JH</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
+            </Header>
 
-          <Section id="section">
-            <ChatList>
-              <Chats >
-                {messageList.map((item, index) => {
-                  return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} />);
-                })}
-                <div ref={el => {this.el = el;}} />
-              </Chats>
-            </ChatList>
-          </Section>
-          <EmoticonPreview visible={this.state.visible} index={this.state.selectedId}></EmoticonPreview>
-          <Footer id="footer" onKeyDown={this._handleKeyDown} tabIndex="0">
-            <InputMessage
-              placeholder="메세지를 입력해주세요."
-              onChange={this._handleChange}
-              value={message}
-              
-            />
-            <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
-            <SendButton onClick={this._sendMessage}>전송</SendButton>
-            <EmoticonList onClick={this._onClickEmoticon} />
-          </Footer>
-
-        </Viewer>
-      </Background>
+            <Section id="section">
+              <ChatList>
+                <Chats >
+                  {messageList.map((item, index) => {
+                    return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} />);
+                  })}
+                  <div ref={el => {this.el = el;}} />
+                </Chats>
+              </ChatList>
+            </Section>
+            <EmoticonPreview visible={this.state.visible} index={this.state.selectedId}></EmoticonPreview>
+            <Footer id="footer" onKeyDown={this._handleKeyDown} tabIndex="0">
+              <InputMessage
+                placeholder="메세지를 입력해주세요."
+                onChange={this._handleChange}
+                value={message}
+                
+              />
+              <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
+              <SendButton onClick={this._sendMessage}>전송</SendButton>
+              <EmoticonList onClick={this._onClickEmoticon} />
+            </Footer>
+            
+          </Viewer>
+        </Background>
+        <Intro>
+          <Logo />
+          <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
+          <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
+        </Intro>
+      </Page>
     );
   }
 }
-// Lines
-const LineA = styled.div`
-  
-`
-const LineB = styled.div`
+
+const Page = styled.div`
+  width: 1920px;
   clear: both;
 `
-// Connection Icons
-const ConnectionIcons = styled.div`
-  width: 68px;
-  height: 16px;
-  background-image: url(${Connections});
-  margin: 10px 10px 10px 10px;
-  float:right;
+const Logo = styled.div`
+  height: 30px;
+  width: 126px;
+  display: block;
+  margin: 170px auto 51px auto;
+  background-image: url(${EmoticboxLogo});
+`
+// Title
+const Title = styled.div`
+  width: 100%;
+  margin: 140px 0px 80px 0px;
+  font-size: 38px;
+  line-height: 55px;
+  text-align: center;
+  color: #36BCD6;
+`
+// Intro
+const Intro = styled.div`
+  margin: 0px 250px 0px 60px;
+  width: 650px;
+  height: 650px;
+  float: left;
+`
+
+const IntroTitle = styled.div`
+  width: 100%;
+  font-size: 24px;
+  line-height: 35px;
+  text-align: center;
+  font-weight: 500;
+  margin: 12px 0px;
+`
+const IntroBody = styled.div`
+  width: 100%;
+  font-size: 22px;
+  line-height: 32px;
+  text-align: center;
+`
+const ApplyButton = styled.button`
 `
 // BackGround
 const Background = styled.div`
+  margin: 0px 60px 0px 250px;
   width: 650px;
   height: 650px;
+  float: left;
   background-image: url(${BackCircle});
 `
 // Viewer
@@ -204,6 +245,7 @@ const Header = styled.div`
   margin: 0px;
   border-radius: 7px 7px 0px 0px;
 `
+
 const LabelLeft= styled.div`
   color:#F2F2F2;
   margin: 0px;
@@ -213,6 +255,21 @@ const LabelLeft= styled.div`
   font-family: SF Pro Text;
   font-size: 15px;
   line-height: 18px;
+`
+// Connection Icons
+const ConnectionIcons = styled.div`
+  width: 68px;
+  height: 16px;
+  background-image: url(${Connections});
+  margin: 10px 10px 10px 10px;
+  float:right;
+`
+
+// Lines
+const LineA = styled.div`
+`
+const LineB = styled.div`
+  clear: both;
 `
 const LabelRight = styled.div`
   color:#F2F2F2;
