@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import ApngComponent from 'react-apng';
 
 
-const EmoticonPreview = ({visible, index}) => {
+const EmoticonPreview = ({visible, index, emoticonIndex}) => {
+    const emoticonList = ["qurkar","cutePig", "nuni"];
+    const emoticonName = emoticonList[emoticonIndex];
+
     if (visible === false) return ('')
     else{
-        const apic1 = require(`../Emoticons/cutePig/apng/${index}.png`);
+        const apic1 = require(`../Emoticons/${emoticonName}/${index}.png`);
         return (
             <EmoticonBox>
                 <PreviewBox>

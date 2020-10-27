@@ -4,10 +4,12 @@ import styled from 'styled-components';
 // images
 import PhoneImage from './Img/phone_mock_up.png'
 import BackCircle from './Img/back_circle.png'
+import BackPreview from './Img/back_preview.png'
 import Emoticon from './Img/emoticon.png'
 import Connections from './Img/connections.png'
 import Search from './Img/search.png'
 import EmoticboxLogo from './Img/emoticBox.png'
+
 
 // components
 import MessageBox from './Component/MessageBox.js'
@@ -21,26 +23,28 @@ class App extends Component {
   ScrollRef = React.createRef();
 
   state = {
+    preview: true,
     message: '',
     isUser: true,
     messageList: [
       {
         message: "안녕하세요! 좋은 아침입니다~",
         isUser: false,
-        date: '오후 02:30',
+        date: '오전 07:30',
         // (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`
       },
       {
         message: "어제 부탁드린 일은 완료됐나요?",
         isUser: false,
-        date: '오후 02:30',
+        date: '오전 07:31',
       },
     ],
     date: '',
     visible: false,
     selectedId: 0,
+    emoticonIndex: 0,
   };
-  
+  무
   componentDidUpdate() {
     this._scrollToBottom();
   }
@@ -70,14 +74,15 @@ class App extends Component {
       }),
     });
   }
-  _handleKeyDown = (e) => {
+  _handleKeyPress = (e) => {
+    console.log(e.key);
     if (e.key === "Enter") {
       this._sendMessage();
     }
   }
   // 보내는 메세지 추가
   _sendMessage = () => {
-    const { message, messageList, selectedId, visible } = this.state;
+    const { message, messageList, selectedId, visible, emoticonIndex } = this.state;
     const date = new Date();
     // 입력한 문자열이 없으면 return
 
@@ -89,6 +94,7 @@ class App extends Component {
         isUser: true,
         date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
         emoticonId: selectedId,
+        emoticonIndex: emoticonIndex,
       }),
       message: '',
       selectedId: 0,
@@ -126,58 +132,96 @@ class App extends Component {
     })
     this._openCloseEmoticionView();
   }
-  
-
+  _onClickApply = () => {
+    this.setState({
+      preview: false
+    })
+  }
+  _handleSelectedEmoticon= (index) => {
+    this.setState({
+      visible: false,
+      emoticonIndex: index,
+    })
+  }
   render() {
-    const { messageList, message } = this.state;
-    return (
-      <Page>
-        <Title>EmoticBox Solution Demo</Title>
-        <Background>
-          <Viewer>
-            <Header>
-              <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
-              <LineB><Arrows>&lt;</Arrows><LabelLeft>Developer JH</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
-            </Header>
+    const { messageList, message, preview, emoticonIndex } = this.state;
+    if (!preview){
+      return (
+        <Page>
+          <Title>EmoticBox Solution Demo</Title>
+          <Background>
+            <Viewer>
+              <Header>
+                <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
+                <LineB><Arrows>&lt;</Arrows><LabelLeft>Developer JH</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
+              </Header>
 
-            <Section id="section">
-              <ChatList>
-                <Chats >
-                  {messageList.map((item, index) => {
-                    return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} />);
-                  })}
-                  <div ref={el => {this.el = el;}} />
-                </Chats>
-              </ChatList>
-            </Section>
-            <EmoticonPreview visible={this.state.visible} index={this.state.selectedId}></EmoticonPreview>
-            <Footer id="footer" onKeyDown={this._handleKeyDown} tabIndex="0">
-              <InputMessage
-                placeholder="메세지를 입력해주세요."
-                onChange={this._handleChange}
-                value={message}
-                
-              />
-              <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
-              <SendButton onClick={this._sendMessage}>전송</SendButton>
-              <EmoticonList onClick={this._onClickEmoticon} />
-            </Footer>
-            
-          </Viewer>
-        </Background>
-        <Intro>
-          <Logo />
-          <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
-          <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
-        </Intro>
-      </Page>
-    );
+              <Section id="section">
+                <ChatList>
+                  <Chats >
+                    {messageList.map((item, index) => {
+                      return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} emoticonIndex={item.emoticonIndex}/>);
+                    })}
+                    <div ref={el => {this.el = el;}} />
+                  </Chats>
+                </ChatList>
+              </Section>
+              <EmoticonPreview visible={this.state.visible} index={this.state.selectedId} emoticonIndex={emoticonIndex}></EmoticonPreview>
+              <Footer id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
+                <InputMessage
+                  placeholder="메세지를 입력해주세요."
+                  onChange={this._handleChange}
+                  value={message}
+                  
+                />
+                <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
+                <SendButton onClick={this._sendMessage}>전송</SendButton>
+                <EmoticonList onClick={this._onClickEmoticon} emoticonIndex={emoticonIndex} handleIndex={this._handleSelectedEmoticon} />
+              </Footer>
+              
+            </Viewer>
+          </Background>
+          {/* <Intro>
+            <Logo />
+            <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
+            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
+            <ApplyButton>이모틱박스 적용하기</ApplyButton>
+          </Intro> */}
+        </Page>
+      );
+    } else {
+      return(
+        <Page>
+          <Title>EmoticBox Solution Demo</Title>
+          <Preview/>
+          
+          <Intro>
+            <Logo />
+            <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
+            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
+            <ApplyButton onClick={this._onClickApply}>이모틱박스 적용하기</ApplyButton>
+          </Intro>
+        </Page>
+      )
+    }
   }
 }
 
+const Preview = styled.div`
+  margin: 0px 60px 418px 250px;
+  width: 650px;
+  height: 700px;
+  float: left;
+  background-image: url(${BackPreview});
+`
 const Page = styled.div`
   width: 1920px;
   clear: both;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `
 const Logo = styled.div`
   height: 30px;
@@ -190,10 +234,14 @@ const Logo = styled.div`
 const Title = styled.div`
   width: 100%;
   margin: 140px 0px 80px 0px;
-  font-size: 38px;
-  line-height: 55px;
   text-align: center;
   color: #36BCD6;
+
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 38px;
+  line-height: 55px;
 `
 // Intro
 const Intro = styled.div`
@@ -201,6 +249,7 @@ const Intro = styled.div`
   width: 650px;
   height: 650px;
   float: left;
+  font-family: Noto Sans KR;
 `
 
 const IntroTitle = styled.div`
@@ -218,10 +267,25 @@ const IntroBody = styled.div`
   text-align: center;
 `
 const ApplyButton = styled.button`
+  display: block;
+  width: 350px;
+  height: 67px;
+  color: #ffffff;
+  
+  font-size: 20px;
+  line-height: 29px;
+
+  margin: 63px auto;
+  background: #36BCD6;
+
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
 `
 // BackGround
 const Background = styled.div`
-  margin: 0px 60px 0px 250px;
+  margin: 0px 60px 200px 250px;
   width: 650px;
   height: 650px;
   float: left;
@@ -328,15 +392,16 @@ const Footer = styled.div`
   height: 40px;
   overflow: hidden;
   position: relative;
-  background: #ffffff;
+  background: #000000;
+  border: 1px solid #E5E5E5;
   border-radius: 0px 0px 7px 7px;
   clear: right;
   outline:none;
 `
 const InputMessage = styled.input`
   float:left;
-  margin-left: -1px;
-  width: 214px;
+  width: 215px;
+  margin-left:-1px;
   height: 36px;
   line-height: 20px;
   font-size: 15px;
@@ -362,6 +427,7 @@ const SendButton = styled.button`
   border: 1px solid #36BCD6;
   background: #36BCD6;
   border-radius: 3px;
+  outline: none;
 `
 
 const EmoticonButton = styled.a`

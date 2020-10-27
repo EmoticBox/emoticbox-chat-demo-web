@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import ApngComponent from 'react-apng';
-const MessageBox = ({message, isUser, date, emoticonId}) => {
+const MessageBox = ({message, isUser, date, emoticonId, emoticonIndex}) => {
+  const emoticonList = ["qurkar","cutePig", "nuni"];
+  const emoticonName = emoticonList[emoticonIndex];
   if (Number(emoticonId) > 0){
-    const apic1 = require(`../Emoticons/cutePig/apng/${emoticonId}.png`);
+    const apic1 = require(`../Emoticons/${emoticonName}/${emoticonId}.png`);
     return (
       <Chat>
           {/* <Icon/> */}
