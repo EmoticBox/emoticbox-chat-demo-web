@@ -11,7 +11,7 @@ const MessageBox = ({message, isUser, date, emoticonId, emoticonIndex}) => {
           {/* <Icon/> */}
           <MessageRight>
               {/* <NickName>Emoticbox</NickName> */}
-              <MessageForm><Time>{date}</Time><ApngComponent autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
+              <MessageForm><Time>{date}</Time><img autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
           </MessageRight>
       </Chat>
     );

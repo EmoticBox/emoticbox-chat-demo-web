@@ -23,6 +23,7 @@ class App extends Component {
   ScrollRef = React.createRef();
 
   state = {
+    imageList: [],
     preview: true,
     message: '',
     isUser: true,
@@ -44,15 +45,39 @@ class App extends Component {
     selectedId: 0,
     emoticonIndex: 0,
   };
-  무
+  
   componentDidUpdate() {
     this._scrollToBottom();
   }
   componentDidMount() {
+    const {imageList} = this.state;
+    
+    const emoticonList = ["qurkar","cutePig", "nuni"];
+    for (let j = 0; j<3; j++) {
+      imageList[j] = [];
+      let emoticonName = emoticonList[j];
+      for (let i=1; i<=24; i++){
+        imageList[j].push({
+          "url": require(`./Emoticons/${emoticonName}/${i}.png`),
+          "thmnail": require(`./Emoticons/${emoticonName}/stopImage/${i}.png`),
+          "index": i,
+        });
+      };
+    }
+
     
   }
   _scrollToBottom = () => {
-    this.el.scrollIntoView({ behavior: 'smooth' });
+  
+    //this.el.scrollIntoView(false);
+    // this.el.scrollTop = this.el.scrollHeight;
+    // console.log(this.el.scrollTop);
+    // console.log(this.el.scrollHeight);
+    this.el.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    // this.el.scrollTop = this.el.scrollHeight;
+    // scrollTo(this.el, this.el.scrollHeight);
+    // this.el.animate({scrollTop: this.el.scrollHeight});
+    
   };
   
   _handleChange = (e) => {
@@ -138,13 +163,15 @@ class App extends Component {
     })
   }
   _handleSelectedEmoticon= (index) => {
+    if (this.state.visible === true ) this._openCloseEmoticionView();
     this.setState({
       visible: false,
       emoticonIndex: index,
     })
   }
   render() {
-    const { messageList, message, preview, emoticonIndex } = this.state;
+    const { messageList, message, preview, emoticonIndex,imageList, visible } = this.state;
+    const checkAble = !(message === "" && visible === false);
     if (!preview){
       return (
         <Page>
@@ -158,7 +185,7 @@ class App extends Component {
 
               <Section id="section">
                 <ChatList>
-                  <Chats >
+                  <Chats  >
                     {messageList.map((item, index) => {
                       return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} emoticonIndex={item.emoticonIndex}/>);
                     })}
@@ -175,8 +202,8 @@ class App extends Component {
                   
                 />
                 <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
-                <SendButton onClick={this._sendMessage}>전송</SendButton>
-                <EmoticonList onClick={this._onClickEmoticon} emoticonIndex={emoticonIndex} handleIndex={this._handleSelectedEmoticon} />
+                <SendButton checkAble={checkAble} onClick={this._sendMessage}>전송</SendButton>
+                <EmoticonList onClick={this._onClickEmoticon} emoticonIndex={emoticonIndex} handleIndex={this._handleSelectedEmoticon} imageList={imageList[emoticonIndex]}/>
               </Footer>
               
             </Viewer>
@@ -208,7 +235,7 @@ class App extends Component {
 }
 
 const Preview = styled.div`
-  margin: 0px 60px 418px 250px;
+  margin: 0px 60px 70px 250px;
   width: 650px;
   height: 700px;
   float: left;
@@ -233,7 +260,7 @@ const Logo = styled.div`
 // Title
 const Title = styled.div`
   width: 100%;
-  margin: 140px 0px 80px 0px;
+  margin: 70px 0px 80px 0px;
   text-align: center;
   color: #36BCD6;
 
@@ -424,8 +451,8 @@ const SendButton = styled.button`
   height: 25px;
   top: 8px;
   color: #ffffff;
-  border: 1px solid #36BCD6;
-  background: #36BCD6;
+  border: 1px solid ${props => props.checkAble ? "#36BCD6" : "#EEEEEE"}; 
+  background: ${props => props.checkAble ? "#36BCD6" : "#EEEEEE"}; 
   border-radius: 3px;
   outline: none;
 `
