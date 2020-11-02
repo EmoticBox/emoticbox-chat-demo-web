@@ -10,7 +10,6 @@ import Connections from './Img/connections.png'
 import Search from './Img/search.png'
 import EmoticboxLogo from './Img/emoticBox.png'
 
-
 // components
 import MessageBox from './Component/MessageBox.js'
 import EmoticonList from './Component/EmoticonList.js'
@@ -125,17 +124,17 @@ class App extends Component {
       selectedId: 0,
       visible: false,
     });
-    if (visible === true) this._openCloseEmoticionView();
+    // if (visible === true) this._openCloseEmoticionView();
   };
   _formatMinutes = (time) => {
     return time < 10 ? `0${time}` : time;
   }
-  _openCloseEmoticionView = () => {
-    const {visible} = this.state;
-    if (visible === true)
-      document.getElementById('section').style.height = "260px";
-    else
-      document.getElementById('section').style.height = "170px";
+  
+  _closeEmoticionPreview = () => {
+    this.setState({
+      visible: false,
+      selectedId: 0,
+    })
   }
   _handleEmoticonView = () => {
     if (isOpen) {
@@ -150,12 +149,16 @@ class App extends Component {
   }
   _onClickEmoticon = (index) => {
     const {visible,selectedId} = this.state;
-    if (selectedId === index) this._sendMessage();
-    this.setState({
-      visible: !visible,
-      selectedId: index,
-    })
-    this._openCloseEmoticionView();
+    // 같은 이모티콘 클릭
+    if (selectedId === index) {
+      // this._sendMessage();
+      this.setState({visible: false, selectedId: 0,})
+    }
+    // 다른 이모티콘 클릭
+    else {
+      this.setState({visible: true, selectedId: index, })
+    }
+    // this._openCloseEmoticionView();
   }
   _onClickApply = () => {
     this.setState({
@@ -163,7 +166,7 @@ class App extends Component {
     })
   }
   _handleSelectedEmoticon= (index) => {
-    if (this.state.visible === true ) this._openCloseEmoticionView();
+    // if (this.state.visible === true ) this._openCloseEmoticionView();
     this.setState({
       visible: false,
       emoticonIndex: index,
@@ -180,7 +183,7 @@ class App extends Component {
             <Viewer>
               <Header>
                 <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
-                <LineB><Arrows>&lt;</Arrows><LabelLeft>Developer JH</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
+                <LineB><Arrows>&lt;</Arrows><LabelLeft>Emoticbox</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
               </Header>
 
               <Section id="section">
@@ -193,7 +196,7 @@ class App extends Component {
                   </Chats>
                 </ChatList>
               </Section>
-              <EmoticonPreview visible={this.state.visible} index={this.state.selectedId} emoticonIndex={emoticonIndex}></EmoticonPreview>
+              <EmoticonPreview visible={this.state.visible} index={this.state.selectedId} emoticonIndex={emoticonIndex} onClose={this._closeEmoticionPreview}></EmoticonPreview>
               <Footer id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
                 <InputMessage
                   placeholder="메세지를 입력해주세요."
@@ -249,6 +252,7 @@ const Page = styled.div`
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  margin: 0 auto;
 `
 const Logo = styled.div`
   height: 30px;

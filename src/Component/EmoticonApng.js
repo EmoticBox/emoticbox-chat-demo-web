@@ -7,8 +7,8 @@ const EmoticonApng = ({emoticonName, index}) => {
 
     return (
         <EmoticonSet>
-            <EmoticonThm id="thm" style={{ height: '76px', padding: '2px'}} src={apic2} />
-            <EmoticonImg id="imgs" style={{ height: '76px', padding: '2px'}} src={apic1} />
+            <EmoticonThm id="thm" style={{ height: '76px', padding: '7px'}} src={apic2} />
+            <EmoticonImg id="imgs" style={{ height: '76px', padding: '7px'}} src={apic1} />
         </EmoticonSet>
     );
 }
