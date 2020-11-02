@@ -187,7 +187,7 @@ class App extends Component {
               </Header>
 
               <Section id="section">
-                <ChatList>
+                <ChatList onClick={this._closeEmoticionPreview}>
                   <Chats  >
                     {messageList.map((item, index) => {
                       return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} emoticonIndex={item.emoticonIndex}/>);
