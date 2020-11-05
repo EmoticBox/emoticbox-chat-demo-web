@@ -85,6 +85,13 @@ const ExampleText = styled.span`
   padding: 5px 10px;
   text-align: left;
 
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  
+
   background-color: white;
   border: 1px solid white;
   border-radius: 3px;
@@ -101,6 +108,13 @@ const MessageText = styled.span`
   max-width: 200px;
   padding: 5px 10px;
   text-align: left;
+
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  letter-spacing: -0.333333px;
 
   background-color: #2DD5B2;
   border: 1px solid #2DD5B2;

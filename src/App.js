@@ -8,7 +8,10 @@ import BackPreview from './Img/back_preview.png'
 import Emoticon from './Img/emoticon.png'
 import Connections from './Img/connections.png'
 import Search from './Img/search.png'
-import EmoticboxLogo from './Img/emoticBox.png'
+import EmoticboxLogo from './Img/emoticBox_4x.png'
+import SearchImage from './Img/searchImage.png'
+import CheckImage from './Img/checkImage.png'
+import Shop from './Img/shop.png'
 
 // components
 import MessageBox from './Component/MessageBox.js'
@@ -23,9 +26,11 @@ class App extends Component {
 
   state = {
     imageList: [],
-    preview: true,
+    
+    pageState: 'preview',
     message: '',
     isUser: true,
+    
     messageList: [
       {
         message: "안녕하세요! 좋은 아침입니다~",
@@ -162,7 +167,7 @@ class App extends Component {
   }
   _onClickApply = () => {
     this.setState({
-      preview: false
+      pageState: "chatRoom"
     })
   }
   _handleSelectedEmoticon= (index) => {
@@ -173,9 +178,22 @@ class App extends Component {
     })
   }
   render() {
-    const { messageList, message, preview, emoticonIndex,imageList, visible } = this.state;
+    const { messageList, message, pageState, emoticonIndex,imageList, visible } = this.state;
     const checkAble = !(message === "" && visible === false);
-    if (!preview){
+    if (pageState === "preview"){
+      return(
+        <Page>
+          <Title>EmoticBox Solution Demo</Title>
+          <Preview/>
+          <Intro>
+            <Logo src={EmoticboxLogo}/>
+            <IntroTitle>[디테일]의 [변화]로 큰 차이를 만들다!</IntroTitle>
+            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
+            <ApplyButton onClick={this._onClickApply}>이모틱박스 적용하기</ApplyButton>
+          </Intro>
+        </Page>
+      )
+    } else {
       return (
         <Page>
           <Title>EmoticBox Solution Demo</Title>
@@ -211,32 +229,40 @@ class App extends Component {
               
             </Viewer>
           </Background>
-          {/* <Intro>
-            <Logo />
-            <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
-            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
-            <ApplyButton>이모틱박스 적용하기</ApplyButton>
-          </Intro> */}
+          {pageState === "chatRooms" && this.state.visible === false ?
+            <Intro>
+              <Logo src={EmoticboxLogo}/>
+              <IntroBoxTitle>이모틱박스의 이모티콘 솔루션이 채팅에 적용됐습니다!</IntroBoxTitle>
+              <IntroBoxBody><IntroImage src={SearchImage}/> 이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/> 아이콘을 클릭해주세요.</IntroBoxBody>
+            </Intro>
+          :
+            <Intro>
+              <Logo src={EmoticboxLogo}/>
+              <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱 박스 스토어와 연결됩니다.</IntroBoxBody>
+              <IntroBoxBody>
+                <IntroImage src={CheckImage}/> 채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
+                <IntroLink>
+                  <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
+                </IntroLink>
+                <IntroLink>
+                  <IntroLinkText href="/">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
+                </IntroLink>
+              </IntroBoxBody>
+            </Intro>
+          }
         </Page>
       );
-    } else {
-      return(
-        <Page>
-          <Title>EmoticBox Solution Demo</Title>
-          <Preview/>
-          
-          <Intro>
-            <Logo />
-            <IntroTitle>[디테일 변화로 큰 차이를 만들다!]</IntroTitle>
-            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
-            <ApplyButton onClick={this._onClickApply}>이모틱박스 적용하기</ApplyButton>
-          </Intro>
-        </Page>
-      )
     }
   }
 }
-
+const IntroLink = styled.div`
+  height: 35px;
+  clear: both;
+`
+const IntroLinkText = styled.a`
+  margin: 0px;
+  float: right;
+`
 const Preview = styled.div`
   margin: 0px 60px 70px 250px;
   width: 650px;
@@ -245,22 +271,22 @@ const Preview = styled.div`
   background-image: url(${BackPreview});
 `
 const Page = styled.div`
+  display: inline-block;
   width: 1920px;
   clear: both;
-  -ms-user-select: none; 
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
+  background: #F7F7F7;
   user-select: none;
-  margin: 0 auto;
+  margin: 0px auto;
 `
-const Logo = styled.div`
-  height: 30px;
-  width: 126px;
+const Logo = styled.img`
+  height: 18px;
+  width: 92px;
   display: block;
-  margin: 170px auto 51px auto;
-  background-image: url(${EmoticboxLogo});
+  margin: 170px 0px 18px 0px;
+  
+  object-fit: cover;
 `
+//background-image: url(${EmoticboxLogo}); 
 // Title
 const Title = styled.div`
   width: 100%;
@@ -276,9 +302,9 @@ const Title = styled.div`
 `
 // Intro
 const Intro = styled.div`
-  margin: 0px 250px 0px 60px;
-  width: 650px;
-  height: 650px;
+  margin: 0px 240px 0px 120px;
+  width: 600px;
+  height: 600px;
   float: left;
   font-family: Noto Sans KR;
 `
@@ -287,26 +313,60 @@ const IntroTitle = styled.div`
   width: 100%;
   font-size: 24px;
   line-height: 35px;
-  text-align: center;
-  font-weight: 500;
-  margin: 12px 0px;
+  font-weight: 700;
+  margin: 0px 0px 27px 0px;
+  clear: both;
 `
 const IntroBody = styled.div`
   width: 100%;
-  font-size: 22px;
-  line-height: 32px;
-  text-align: center;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 24.62px;
+`
+const IntroImage = styled.img`
+  height: 15px;
+  width: 15px;
+`
+const IntroBoxTitle = styled.div`
+  background: #FFFFFF;
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+  
+  width: 100%;
+  font-size: 24px;
+  line-height: 35px;
+  
+  text-align: left;
+  padding: 12px 0px;
+  margin: 15px 0px 15px 0px;
+`
+const IntroBoxBody = styled.div`
+  background: #FFFFFF;
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+
+  padding: 14px 24px;
+  margin: 7.5px;
+  width: 100%;
+  font-size: 17px;
+  line-height: 35px;
+  text-align: left;
+  
+  font-weight: 400;
+  clear: both;
 `
 const ApplyButton = styled.button`
   display: block;
-  width: 350px;
+  width: 370px;
   height: 67px;
   color: #ffffff;
   
   font-size: 20px;
   line-height: 29px;
 
-  margin: 63px auto;
+  margin: 50px 0px;
   background: #36BCD6;
 
   border: 1px solid #36BCD6;
@@ -449,6 +509,7 @@ const InputMessage = styled.input`
 const SendButton = styled.button`
   position: absolute;
   display: inline-block;
+  
   margin-left:-50px;
   float: right;
   width: 42px;

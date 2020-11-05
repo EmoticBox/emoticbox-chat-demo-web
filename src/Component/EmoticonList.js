@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ApngComponent from 'react-apng';
 
+import ShopImage from '../Img/shop.png'
 
 const EmoticonList = ({onClick, emoticonIndex, handleIndex, imageList}) => {
 
@@ -23,19 +24,20 @@ const EmoticonList = ({onClick, emoticonIndex, handleIndex, imageList}) => {
   
     return (
         <Emoticons>
-                <EmoticonTab>
-                  <EmoticonIcon src={tabQurkar} onClick={() => handleIndex(0)}/>
-                  <EmoticonIcon src={tabCutePig} onClick={() => handleIndex(1)}/>
-                  <EmoticonIcon src={tabNuni} onClick={() => handleIndex(2)}/>
-                </EmoticonTab>
-                <EmoticonBox>
-                  {imageList.map( (image) => 
-                    <EmoticonSet>
-                      <EmoticonThm id="thm" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.thmnail} />
-                      <EmoticonImg id="imgs" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.url} />
-                    </EmoticonSet>
-                  )}
-                </EmoticonBox>
+          <EmoticonTab>
+            <EmoticonIcon src={tabQurkar} onClick={() => handleIndex(0)}/>
+            <EmoticonIcon src={tabCutePig} onClick={() => handleIndex(1)}/>
+            <EmoticonIcon src={tabNuni} onClick={() => handleIndex(2)}/>
+            <Shop src={ShopImage}/><VerticalLine/>
+          </EmoticonTab>
+          <EmoticonBox>
+            {imageList.map( (image) => 
+              <EmoticonSet>
+                <EmoticonThm id="thm" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.thmnail} />
+                <EmoticonImg id="imgs" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.url} />
+              </EmoticonSet>
+            )}
+          </EmoticonBox>
         </Emoticons>
     )
 };
@@ -49,6 +51,19 @@ const EmoticonSet = styled.a`
   &:hover #imgs {
     display: inline;  
   }
+`
+const VerticalLine = styled.div`
+  margin: 5px 1px 5px 1px;
+  height: 21px;
+  width: 1px;
+  border-left: 1px solid #E7E7E7;
+  float: right;
+`
+const Shop = styled.img`
+  margin: 5px 10px 5px 10px;
+  height: 20px;
+  width: 20px;
+  float: right;
 `
 const EmoticonThm = styled.img`
 
@@ -82,7 +97,7 @@ const EmoticonBox = styled.div`
 const EmoticonTab = styled.div`
   width: 100%;
   height: 30px;
-  padding-left: 10px;
+  paddingHorizontal: 10px;
   background: #ffffff;
   border-bottom: 1px solid #E5E5E5;
 `
