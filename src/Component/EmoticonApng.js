@@ -7,8 +7,8 @@ const EmoticonApng = ({emoticonName, index}) => {
 
     return (
         <EmoticonSet>
-            <EmoticonThm id="thm" style={{ height: '76px', padding: '7px'}} src={apic2} />
-            <EmoticonImg id="imgs" style={{ height: '76px', padding: '7px'}} src={apic1} />
+            <EmoticonThm id="thm"  src={apic2} />
+            <EmoticonImg id="imgs"  src={apic1} />
         </EmoticonSet>
     );
 }
@@ -28,9 +28,15 @@ const EmoticonSet = styled.a`
 `
 const EmoticonThm = styled.img`
   display: inline;
+  height: 76px;
+  padding 7px;
+  object-fit: cover;
 `
 const EmoticonImg = styled.img`
   display: none;
+  height: 76px;
+  padding 7px;
+  object-fit: cover;
 `
 
 export default EmoticonApng;

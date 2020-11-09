@@ -26,11 +26,6 @@ class App extends Component {
 
   state = {
     imageList: [],
-    
-    pageState: 'preview',
-    message: '',
-    isUser: true,
-    
     messageList: [
       {
         message: "안녕하세요! 좋은 아침입니다~",
@@ -44,6 +39,11 @@ class App extends Component {
         date: '오전 07:31',
       },
     ],
+    isMarketClick: false,
+    pageState: 'preview',
+    message: '',
+    isUser: true,
+
     date: '',
     visible: false,
     selectedId: 0,
@@ -170,6 +170,11 @@ class App extends Component {
       pageState: "chatRoom"
     })
   }
+  _onClickMarket = () => {
+    this.setState({
+      isMarketClick: true,
+    })
+  }
   _handleSelectedEmoticon= (index) => {
     // if (this.state.visible === true ) this._openCloseEmoticionView();
     this.setState({
@@ -229,11 +234,11 @@ class App extends Component {
               
             </Viewer>
           </Background>
-          {pageState === "chatRooms" && this.state.visible === false ?
+          {pageState === "chatRoom" && this.state.visible === false ?
             <Intro>
               <Logo src={EmoticboxLogo}/>
               <IntroBoxTitle>이모틱박스의 이모티콘 솔루션이 채팅에 적용됐습니다!</IntroBoxTitle>
-              <IntroBoxBody><IntroImage src={SearchImage}/> 이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/> 아이콘을 클릭해주세요.</IntroBoxBody>
+              <IntroBoxBody><IntroImage src={SearchImage}/>이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/>아이콘을 클릭해주세요.</IntroBoxBody>
             </Intro>
           :
             <Intro>
@@ -272,7 +277,9 @@ const Preview = styled.div`
 `
 const Page = styled.div`
   display: inline-block;
-  width: 1920px;
+  min-width: 1920px;
+  width: 100%;
+  height: 100%;
   clear: both;
   background: #F7F7F7;
   user-select: none;
@@ -322,10 +329,12 @@ const IntroBody = styled.div`
   font-size: 17px;
   font-weight: 400;
   line-height: 24.62px;
+
 `
 const IntroImage = styled.img`
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
+  
 `
 const IntroBoxTitle = styled.div`
   background: #FFFFFF;
@@ -338,8 +347,8 @@ const IntroBoxTitle = styled.div`
   line-height: 35px;
   
   text-align: left;
-  padding: 12px 0px;
-  margin: 15px 0px 15px 0px;
+  padding: 12px 24px;
+  margin: 7.5px;
 `
 const IntroBoxBody = styled.div`
   background: #FFFFFF;
