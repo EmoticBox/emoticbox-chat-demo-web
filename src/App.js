@@ -13,19 +13,25 @@ import SearchImage from './Img/searchImage.png'
 import CheckImage from './Img/checkImage.png'
 import Shop from './Img/shop.png'
 
+// video
+import ReactPlayer from 'react-player'
+import demoVideo from "./video/demo.gif";
+
 // components
 import MessageBox from './Component/MessageBox.js'
 import EmoticonList from './Component/EmoticonList.js'
 import EmoticonPreview  from './Component/EmoticonPreview.js'
 
-let isOpen = false;
-const date = new Date();
+// let isOpen = false;
+// const date = new Date();
 class App extends Component {
   
   ScrollRef = React.createRef();
 
   state = {
+    isOpen: false,
     imageList: [],
+    emoticonList: [],
     messageList: [
       {
         message: "안녕하세요! 좋은 아침입니다~",
@@ -50,42 +56,62 @@ class App extends Component {
     emoticonIndex: 0,
   };
   
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     this._scrollToBottom();
+    console.log("market", this.state.isMarketClick, prevState.isMarketClick);
+    if (this.state.isMarketClick !== prevState.isMarketClick)
+    {
+      this._getEmoticonList();
+    }
   }
-  componentDidMount() {
-    const {imageList} = this.state;
+  componentWillMount() {
+    this._getEmoticonList();
+  }
+  _getEmoticonList = () => {
+    const {imageList, emoticonList} = this.state;
+    const defaultList = [{
+      name : "qurkar",
+      count: 24,
+    },
+    {
+      name : "cutePig",
+      count: 24,
+    },
+    {
+      name : "nuni",
+      count: 24
+    },
+    ]
+    if (this.state.isMarketClick)
+    {
+      defaultList.push({
+        name : "meatLove",
+        count: 16
+      });
+    }
+    this.setState({
+      emoticonList: defaultList
+    })
     
-    const emoticonList = ["qurkar","cutePig", "nuni"];
-    for (let j = 0; j<3; j++) {
-      imageList[j] = [];
-      let emoticonName = emoticonList[j];
-      for (let i=1; i<=24; i++){
-        imageList[j].push({
-          "url": require(`./Emoticons/${emoticonName}/${i}.png`),
-          "thmnail": require(`./Emoticons/${emoticonName}/stopImage/${i}.png`),
+    defaultList.map((emoticon, index) => {
+      imageList[index] = [];
+      for (let i=1; i <= emoticon.count; i++){
+        imageList[index].push({
+          "url": require(`./Emoticons/${emoticon.name}/${i}.png`),
+          "thmnail": require(`./Emoticons/${emoticon.name}/stopImage/${i}.png`),
           "index": i,
         });
       };
-    }
-
-    
+    });
+    if (this.state.isMarketClick)
+      this._handleSelectedEmoticon(3);
   }
   _scrollToBottom = () => {
-  
-    //this.el.scrollIntoView(false);
-    // this.el.scrollTop = this.el.scrollHeight;
-    // console.log(this.el.scrollTop);
-    // console.log(this.el.scrollHeight);
-    this.el.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-    // this.el.scrollTop = this.el.scrollHeight;
-    // scrollTo(this.el, this.el.scrollHeight);
-    // this.el.animate({scrollTop: this.el.scrollHeight});
-    
+    if (this.el)
+      this.el.scrollTop = this.el.scrollHeight;
   };
   
   _handleChange = (e) => {
-
     this.setState({
       message: e.target.value.length < 18 ? e.target.value : e.target.value //.toString().substring(0,18)
     });
@@ -95,7 +121,7 @@ class App extends Component {
     const { messageList } = this.state;
     const date = new Date();
     this.setState({
-      messageList: messageList.concat({
+        messageList: messageList.concat({
         message: message,
         isUser: false,
         date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
@@ -142,15 +168,19 @@ class App extends Component {
     })
   }
   _handleEmoticonView = () => {
-    if (isOpen) {
+    console.log("isOpen", this.state.isOpen);
+    if (this.state.isOpen) {
       if (this.state.visible === true) this._onClickEmoticon();
-      document.getElementById('section').style.height = "480px";
-      document.getElementById('footer').style.height = "40px";
+      // document.getElementById('section').style.height = "480px";
+      // document.getElementById('footer').style.height = "40px";
     } else {
-      document.getElementById('section').style.height = "260px";
-      document.getElementById('footer').style.height = "260px";
+      // document.getElementById('section').style.height = "260px";
+      // document.getElementById('footer').style.height = "260px";
     }
-    isOpen = !isOpen;
+    this.setState({
+      isOpen: !this.state.isOpen
+    })
+    
   }
   _onClickEmoticon = (index) => {
     const {visible,selectedId} = this.state;
@@ -165,15 +195,29 @@ class App extends Component {
     }
     // this._openCloseEmoticionView();
   }
+
   _onClickApply = () => {
     this.setState({
       pageState: "chatRoom"
     })
   }
+  _onClickBuy = () => {
+    this.setState({
+      pageState: "chatRoom"
+      
+    })
+  }
+  _onClickBack = () => {
+    this.setState({
+      pageState: "preview"
+    })
+  }
   _onClickMarket = () => {
     this.setState({
+      pageState: "market",
       isMarketClick: true,
     })
+    // this._getEmoticonList();
   }
   _handleSelectedEmoticon= (index) => {
     // if (this.state.visible === true ) this._openCloseEmoticionView();
@@ -198,68 +242,138 @@ class App extends Component {
           </Intro>
         </Page>
       )
-    } else {
+    } else if (pageState === "chatRoom") {
       return (
         <Page>
           <Title>EmoticBox Solution Demo</Title>
           <Background>
             <Viewer>
               <Header>
-                <LineA><LabelLeft>9 : 45</LabelLeft><ConnectionIcons/></LineA>
-                <LineB><Arrows>&lt;</Arrows><LabelLeft>Emoticbox</LabelLeft><LabelRight>...</LabelRight><SearchIcon/></LineB>
+                <LineA>
+                  <LabelTime>9:45</LabelTime>
+                  <ConnectionIcons/>
+                </LineA>
+                
+                <LineB onClick={() => {this._onClickBack()}}>
+                  <Arrows>&lt;</Arrows>
+                  <LabelLeft>Emoticbox</LabelLeft>
+                  <LabelRight>...</LabelRight>
+                  <SearchIcon/>
+                </LineB>
               </Header>
 
-              <Section id="section">
-                <ChatList onClick={this._closeEmoticionPreview}>
-                  <Chats  >
+              <Section style={{height: this.state.isOpen ? "260px" : "480px"}} id="section">
+                <ChatList id="chatLog" ref={el => {this.el = el;}} onClick={this._closeEmoticionPreview}>
+                  <Chats>
                     {messageList.map((item, index) => {
-                      return (<MessageBox key={index} message={item.message} isUser={item.isUser} date={item.date} emoticonId={item.emoticonId} emoticonIndex={item.emoticonIndex}/>);
+                      console.log("messageList", item.emoticonIndex);
+                      return (
+                        <MessageBox
+                          key={index}
+                          message={item.message}
+                          isUser={item.isUser}
+                          date={item.date}
+                          emoticonId={item.emoticonId}
+                          emoticonName={item.emoticonId > 0 ? this.state.emoticonList[item.emoticonIndex].name : null}
+                        />
+                      );
                     })}
-                    <div ref={el => {this.el = el;}} />
                   </Chats>
                 </ChatList>
               </Section>
-              <EmoticonPreview visible={this.state.visible} index={this.state.selectedId} emoticonIndex={emoticonIndex} onClose={this._closeEmoticionPreview}></EmoticonPreview>
-              <Footer id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
+              <EmoticonPreview
+                visible={this.state.visible} 
+                index={this.state.selectedId}
+                emoticonName={this.state.emoticonList[emoticonIndex].name}
+                onClose={this._closeEmoticionPreview}
+              />
+              <Footer style={{height: this.state.isOpen ? "260px" : "40px"}} id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
                 <InputMessage
                   placeholder="메세지를 입력해주세요."
                   onChange={this._handleChange}
                   value={message}
                   
                 />
-                <EmoticonButton onClick={this._handleEmoticonView}><ButtonImg src={Emoticon} /></EmoticonButton>
+                <EmoticonButton onClick={this._handleEmoticonView}>
+                  <ButtonImg src={Emoticon} />
+                </EmoticonButton>
                 <SendButton checkAble={checkAble} onClick={this._sendMessage}>전송</SendButton>
-                <EmoticonList onClick={this._onClickEmoticon} emoticonIndex={emoticonIndex} handleIndex={this._handleSelectedEmoticon} imageList={imageList[emoticonIndex]}/>
+                <EmoticonList
+                  onClick={this._onClickEmoticon}
+                  thmList={this.state.emoticonList}
+                  emoticonIndex={emoticonIndex} 
+                  handleIndex={this._handleSelectedEmoticon} 
+                  imageList={imageList[emoticonIndex]}
+                  onClickMarket={this._onClickMarket}
+                />
               </Footer>
               
             </Viewer>
           </Background>
-          {pageState === "chatRoom" && this.state.visible === false ?
+          {pageState === "chatRoom" && this.state.isOpen === false ?
             <Intro>
               <Logo src={EmoticboxLogo}/>
               <IntroBoxTitle>이모틱박스의 이모티콘 솔루션이 채팅에 적용됐습니다!</IntroBoxTitle>
-              <IntroBoxBody><IntroImage src={SearchImage}/>이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/>아이콘을 클릭해주세요.</IntroBoxBody>
+              <IntroBoxBody>
+                <IntroImage src={SearchImage}/> 이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/> 아이콘을 클릭해주세요.
+              </IntroBoxBody>
             </Intro>
           :
             <Intro>
               <Logo src={EmoticboxLogo}/>
-              <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱 박스 스토어와 연결됩니다.</IntroBoxBody>
+              <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
               <IntroBoxBody>
                 <IntroImage src={CheckImage}/> 채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
-                <IntroLink>
+                {/* <IntroLink>
                   <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
-                </IntroLink>
+                </IntroLink> */}
                 <IntroLink>
-                  <IntroLinkText href="/">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
+                  <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
                 </IntroLink>
               </IntroBoxBody>
             </Intro>
           }
         </Page>
       );
+    } else {
+      return (
+        <Page>
+          <Title>EmoticBox Solution Demo</Title>
+          
+          <Background>
+            <Viewer>
+              <StoreView>
+              <img
+                  src={demoVideo}
+                  width = "100%"
+                  height = "598px"
+              />
+                {/* <StoreVideo src={demoVideo}>
+                </StoreVideo> */}
+              </StoreView>
+            </Viewer>
+          </Background>
+          <Intro>
+            <Logo src={EmoticboxLogo}/>
+            <IntroTitle>EmoticBox App</IntroTitle>
+            <IntroBody>앱을 통해 다양한 이모티콘들을 구매하고 관리할 수 있습니다.</IntroBody>
+            <ApplyButton onClick={this._onClickBuy}>이모티콘 구매완료</ApplyButton>
+          </Intro>
+        </Page>
+      );
     }
   }
 }
+const StoreView = styled.div`
+  height: 598px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: #000000;
+`
+const StoreVideo = styled(ReactPlayer)`
+  height: 598px;
+  width: 100%;
+`
 const IntroLink = styled.div`
   height: 35px;
   clear: both;
@@ -270,10 +384,12 @@ const IntroLinkText = styled.a`
 `
 const Preview = styled.div`
   margin: 0px 60px 70px 250px;
+  padding: 0px;
   width: 650px;
-  height: 700px;
+  height: 730px;
   float: left;
   background-image: url(${BackPreview});
+  background-size: cover;
 `
 const Page = styled.div`
   display: inline-block;
@@ -332,8 +448,9 @@ const IntroBody = styled.div`
 
 `
 const IntroImage = styled.img`
-  height: 20px;
-  width: 20px;
+  
+  height: 15px;
+  width: 15px;
   
 `
 const IntroBoxTitle = styled.div`
@@ -409,13 +526,22 @@ const Header = styled.div`
   margin: 0px;
   border-radius: 7px 7px 0px 0px;
 `
-
-const LabelLeft= styled.div`
+const LabelTime = styled.div`
   color:#F2F2F2;
   margin: 0px;
   text-align: center;
   float:left;
   margin: 10px 10px 10px 20px;
+  font-family: SF Pro Text;
+  font-size: 15px;
+  line-height: 18px;
+`
+const LabelLeft= styled.div`
+  color:#F2F2F2;
+  margin: 0px;
+  text-align: center;
+  float:left;
+  margin: 10px 10px 10px 10px;
   font-family: SF Pro Text;
   font-size: 15px;
   line-height: 18px;
@@ -479,7 +605,6 @@ const ChatList = styled.div`
   };
 `
 const Chats = styled.ul`
-
   list-style: none;
 
   margin: 0px;
@@ -492,23 +617,24 @@ const Footer = styled.div`
   height: 40px;
   overflow: hidden;
   position: relative;
-  background: #000000;
+  background: #ffffff;
   border: 1px solid #E5E5E5;
   border-radius: 0px 0px 7px 7px;
+  padding: 0px;
   clear: right;
   outline:none;
 `
 const InputMessage = styled.input`
   float:left;
-  width: 215px;
-  margin-left:-1px;
-  height: 36px;
+  width: 217px;
+  margin-left: -1px;
+  height: 38px;
   line-height: 20px;
   font-size: 15px;
   outline: none;
+  border: none;
   padding-left: 10px;
   padding-right: 100px;
-  border: 1px solid #E5E5E5;
 
   font-size: 12px;
   line-height: 17px;

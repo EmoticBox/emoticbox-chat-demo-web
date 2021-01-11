@@ -28,8 +28,8 @@ const EmoticonSet = styled.a`
 `
 const EmoticonThm = styled.img`
   display: inline;
-  height: 76px;
-  padding 7px;
+  height: 80px;
+  padding: 0px;
   object-fit: cover;
 `
 const EmoticonImg = styled.img`

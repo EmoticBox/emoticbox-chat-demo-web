@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import ApngComponent from 'react-apng';
-const MessageBox = ({message, isUser, date, emoticonId, emoticonIndex}) => {
-  const emoticonList = ["qurkar","cutePig", "nuni"];
-  const emoticonName = emoticonList[emoticonIndex];
+const MessageBox = ({message, isUser, date, emoticonId, emoticonName}) => {
+  
   if (Number(emoticonId) > 0){
     const apic1 = require(`../Emoticons/${emoticonName}/${emoticonId}.png`);
     return (
@@ -68,6 +67,13 @@ const MessageRight = styled.div`
 const MessageForm = styled.p`
 `
 const Time = styled.span`
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 12px;
+  color: rgba(0, 0, 0, 0.4);
+  
   vertical-align: bottom;
   margin-left: 7px;
   margin-right: 7px;

@@ -5,11 +5,8 @@ import xButton from '../Img/xButton.png'
 // import ApngComponent from 'react-apng';
 
 
-const EmoticonPreview = ({visible, index, emoticonIndex, onClose}) => {
-    const emoticonList = ["qurkar","cutePig", "nuni"];
-    const emoticonName = emoticonList[emoticonIndex];
-
-    if (visible === false || index === 0) return ('')
+const EmoticonPreview = ({visible, index, emoticonName, onClose}) => {
+    if (visible === false || index === 0 || index === undefined) return ('')
     else{
         let apic1 = require(`../Emoticons/${emoticonName}/${index}.png`);
         let apic2 = require(`../Emoticons/${emoticonName}/stopImage/${index}.png`);

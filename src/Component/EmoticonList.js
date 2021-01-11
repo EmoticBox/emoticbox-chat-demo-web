@@ -1,35 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-import ApngComponent from 'react-apng';
-
 import ShopImage from '../Img/shop.png'
 
-const EmoticonList = ({onClick, emoticonIndex, handleIndex, imageList}) => {
+const EmoticonList = ({onClick, thmList, emoticonIndex, handleIndex, imageList, onClickMarket}) => {
 
-  // const emoticonList = ["qurkar","cutePig", "nuni"];
-  // const emoticonName = emoticonList[emoticonIndex];
-  // let imageList = [];
-  // imageList = [];
-  // for (let i=1; i<=24; i++){
-  //   imageList.push({
-  //     "url": require(`../Emoticons/${emoticonName}/${i}.png`),
-  //     "index": i,
-  //   });
-  // };
-  // on off
-  const tabQurkar = emoticonIndex === 0 ? require(`../Emoticons/qurkar/tab_on.png`) : require(`../Emoticons/qurkar/tab_off.png`);
-  const tabCutePig = emoticonIndex === 1 ? require(`../Emoticons/cutePig/tab_on.png`) : require(`../Emoticons/cutePig/tab_off.png`);
-  const tabNuni = emoticonIndex === 2 ? require(`../Emoticons/nuni/tab_on.png`) : require(`../Emoticons/nuni/tab_off.png`);
-  
-  
     return (
         <Emoticons>
+          {/* 이모티콘 썸네일 */}
           <EmoticonTab>
-            <EmoticonIcon src={tabQurkar} onClick={() => handleIndex(0)}/>
-            <EmoticonIcon src={tabCutePig} onClick={() => handleIndex(1)}/>
-            <EmoticonIcon src={tabNuni} onClick={() => handleIndex(2)}/>
-            <Shop src={ShopImage}/><VerticalLine/>
+            {thmList.map((thm, index) => {
+                let tabImage = emoticonIndex === index ? require(`../Emoticons/${thm.name}/tab_on.png`) : require(`../Emoticons/${thm.name}/tab_off.png`)
+                return (
+                  <EmoticonIcon 
+                    src={tabImage}
+                    onClick={() => handleIndex(index)}
+                  />
+                );
+            })}
+            <Shop src={ShopImage} onClick={onClickMarket}/><VerticalLine/>
           </EmoticonTab>
+
+          {/* 이모티콘 리스트 */}
           <EmoticonBox>
             {imageList.map( (image) => 
               <EmoticonSet>
@@ -77,6 +68,7 @@ const Emoticons = styled.div`
   height: 220px;
   background: #ffffff;
   clear: both;
+  border-top: 1px solid #E5E5E5;
 `
 const EmoticonIcon = styled.img`
   margin: 5px 10px 5px 10px;
