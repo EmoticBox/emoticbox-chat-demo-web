@@ -336,7 +336,7 @@ class App extends Component {
                     <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
                   </IntroLink> */}
                   <IntroLink>
-                    <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
+                    <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store" target="_blank">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
                   </IntroLink>
                 </IntroBoxBody>
                 <IntroBoxBodySmall>
