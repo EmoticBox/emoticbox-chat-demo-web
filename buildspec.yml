@@ -14,4 +14,4 @@
           - npm run build # 빌드
       post_build:
         commands:
-          - aws s3 sync ./build $(echo s3://$FRONTEND_DEMO_CHAT_HOST) # 빌드 후 결과물을 버킷으로 업로드
+          - aws s3 sync ./build $(echo s3://$FRONTEND_DEMO_CHAT_HOST) # 빌드 후 결과물을 버킷으로 업로드np
