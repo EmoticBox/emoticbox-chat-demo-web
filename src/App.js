@@ -340,7 +340,7 @@ class App extends Component {
                   </IntroLink>
                 </IntroBoxBody>
                 <IntroBoxBodySmall>
-                  <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 모든 이모티콘들은 제휴사에서 전부 사용할 수 있습니다.<br/>
+                  <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 이모티콘들은 이모틱박스의 모든 제휴사에서 사용할 수 있습니다.<br/>
                   <IntroImageSmall src={CheckImageSmall}/> 해당 채팅 서비스의 운영 제휴사는 Emoticbox로 부터 해당 이모티콘의 판매건에 대한<br/>
                   <IntroEmptySmall />수익의 10%를 분배받습니다.
                 </IntroBoxBodySmall>
