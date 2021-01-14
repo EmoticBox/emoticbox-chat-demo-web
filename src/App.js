@@ -70,7 +70,17 @@ class App extends Component {
   }
   _getEmoticonList = () => {
     const {imageList, emoticonList} = this.state;
-    const defaultList = [{
+    let defaultList = [];
+    if (this.state.isMarketClick)
+    {
+      defaultList.push({
+        name : "meatLove",
+        count: 16
+      });
+    }
+    defaultList = [
+      ...defaultList,
+    {
       name : "qurkar",
       count: 24,
     },
@@ -83,13 +93,7 @@ class App extends Component {
       count: 24
     },
     ]
-    if (this.state.isMarketClick)
-    {
-      defaultList.push({
-        name : "meatLove",
-        count: 16
-      });
-    }
+    
     this.setState({
       emoticonList: defaultList
     })
@@ -105,7 +109,7 @@ class App extends Component {
       };
     });
     if (this.state.isMarketClick)
-      this._handleSelectedEmoticon(3);
+      this._handleSelectedEmoticon(0);
   }
   _scrollToBottom = () => {
     if (this.el)
@@ -233,143 +237,153 @@ class App extends Component {
     if (pageState === "preview"){
       return(
         <Page>
-          <Title>EmoticBox Solution Demo</Title>
-          <Preview/>
-          <Intro>
-            <Logo src={EmoticboxLogo}/>
-            <IntroTitle>[디테일]의 [변화]로 큰 차이를 만들다!</IntroTitle>
-            <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
-            <ApplyButton onClick={this._onClickApply}>이모틱박스 적용하기</ApplyButton>
-          </Intro>
+          <PageCenter>
+            <Title>EmoticBox Solution Demo</Title>
+            <Preview/>
+            <Intro>
+              <Logo src={EmoticboxLogo}/>
+              <IntroTitle>[디테일]의 [변화]로 큰 차이를 만들다!</IntroTitle>
+              <IntroBody>채팅을 더욱 다채롭게 만들어 줄 이모티콘 솔루션 플랫폼<br />지금 바로 경험해 보세요.</IntroBody>
+              <ApplyButton onClick={this._onClickApply}>이모틱박스 적용하기</ApplyButton>
+            </Intro>
+          </PageCenter>
         </Page>
       )
     } else if (pageState === "chatRoom") {
       return (
         <Page>
-          <Title>EmoticBox Solution Demo</Title>
-          <Background>
-            <Viewer>
-              <Header>
-                <LineA>
-                  <LabelTime>9:45</LabelTime>
-                  <ConnectionIcons/>
-                </LineA>
-                
-                <LineB onClick={() => {this._onClickBack()}}>
-                  <Arrows>&lt;</Arrows>
-                  <LabelLeft>Emoticbox</LabelLeft>
-                  <LabelRight>...</LabelRight>
-                  <SearchIcon/>
-                </LineB>
-              </Header>
-
-              <Section style={{height: this.state.isOpen ? "260px" : "480px"}} id="section">
-                <ChatList id="chatLog" ref={el => {this.el = el;}} onClick={this._closeEmoticionPreview}>
-                  <Chats>
-                    {messageList.map((item, index) => {
-                      console.log("messageList", item.emoticonIndex);
-                      return (
-                        <MessageBox
-                          key={index}
-                          message={item.message}
-                          isUser={item.isUser}
-                          date={item.date}
-                          emoticonId={item.emoticonId}
-                          emoticonName={item.emoticonId > 0 ? this.state.emoticonList[item.emoticonIndex].name : null}
-                        />
-                      );
-                    })}
-                  </Chats>
-                </ChatList>
-              </Section>
-              <EmoticonPreview
-                visible={this.state.visible} 
-                index={this.state.selectedId}
-                emoticonName={this.state.emoticonList[emoticonIndex].name}
-                onClose={this._closeEmoticionPreview}
-              />
-              <Footer style={{height: this.state.isOpen ? "260px" : "40px"}} id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
-                <InputMessage
-                  placeholder="메세지를 입력해주세요."
-                  onChange={this._handleChange}
-                  value={message}
+          <PageCenter>
+            <Title>EmoticBox Solution Demo</Title>
+            <Background>
+              <Viewer>
+                <Header>
+                  <LineA>
+                    <LabelTime>9:45</LabelTime>
+                    <ConnectionIcons/>
+                  </LineA>
                   
+                  <LineB onClick={() => {this._onClickBack()}}>
+                    <Arrows>&lt;</Arrows>
+                    <LabelLeft>Emoticbox</LabelLeft>
+                    <LabelRight>...</LabelRight>
+                    <SearchIcon/>
+                  </LineB>
+                </Header>
+
+                <Section style={{height: this.state.isOpen ? "260px" : "480px"}} id="section">
+                  <ChatList id="chatLog" ref={el => {this.el = el;}} onClick={this._closeEmoticionPreview}>
+                    <Chats>
+                      {messageList.map((item, index) => {
+                        console.log("messageList", item.emoticonIndex);
+                        return (
+                          <MessageBox
+                            key={index}
+                            message={item.message}
+                            isUser={item.isUser}
+                            date={item.date}
+                            emoticonId={item.emoticonId}
+                            emoticonName={item.emoticonId > 0 ? this.state.emoticonList[item.emoticonIndex].name : null}
+                          />
+                        );
+                      })}
+                    </Chats>
+                  </ChatList>
+                </Section>
+                <EmoticonPreview
+                  visible={this.state.visible} 
+                  index={this.state.selectedId}
+                  emoticonName={this.state.emoticonList[emoticonIndex].name}
+                  onClose={this._closeEmoticionPreview}
                 />
-                <EmoticonButton onClick={this._handleEmoticonView}>
-                  <ButtonImg src={Emoticon} />
-                </EmoticonButton>
-                <SendButton checkAble={checkAble} onClick={this._sendMessage}>전송</SendButton>
-                <EmoticonList
-                  onClick={this._onClickEmoticon}
-                  thmList={this.state.emoticonList}
-                  emoticonIndex={emoticonIndex} 
-                  handleIndex={this._handleSelectedEmoticon} 
-                  imageList={imageList[emoticonIndex]}
-                  onClickMarket={this._onClickMarket}
-                />
-              </Footer>
-              
-            </Viewer>
-          </Background>
-          {pageState === "chatRoom" && this.state.isOpen === false ?
-            <Intro>
-              <Logo src={EmoticboxLogo}/>
-              <IntroBoxTitle>이모틱박스의 이모티콘 솔루션이 채팅에 적용됐습니다!</IntroBoxTitle>
-              <IntroBoxBody>
-                <IntroImage src={SearchImage}/> 이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/> 아이콘을 클릭해주세요.
-              </IntroBoxBody>
-            </Intro>
-          :
-            <Intro>
-              <Logo src={EmoticboxLogo}/>
-              <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
-              <IntroBoxBody>
-                <IntroImage src={CheckImage}/> 채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
-                {/* <IntroLink>
-                  <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
-                </IntroLink> */}
-                <IntroLink>
-                  <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
-                </IntroLink>
-              </IntroBoxBody>
-              <IntroBoxBodySmall>
-                <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 모든 이모티콘들은 제휴사에서 전부 사용할 수 있습니다.<br/>
-                <IntroImageSmall src={CheckImageSmall}/> 해당 채팅 서비스의 운영 제휴사는 Emoticbox로 부터 해당 이모티콘의 판매건에 대한<br/>
-                <IntroEmptySmall />수익의 10%를 분배받습니다.
-              </IntroBoxBodySmall>
-            </Intro>
-          }
+                <Footer style={{height: this.state.isOpen ? "260px" : "40px"}} id="footer" onKeyPress={this._handleKeyPress} tabIndex="-1">
+                  <InputMessage
+                    placeholder="메세지를 입력해주세요."
+                    onChange={this._handleChange}
+                    value={message}
+                    
+                  />
+                  <EmoticonButton onClick={this._handleEmoticonView}>
+                    <ButtonImg src={Emoticon} />
+                  </EmoticonButton>
+                  <SendButton checkAble={checkAble} onClick={this._sendMessage}>전송</SendButton>
+                  <EmoticonList
+                    onClick={this._onClickEmoticon}
+                    thmList={this.state.emoticonList}
+                    emoticonIndex={emoticonIndex} 
+                    handleIndex={this._handleSelectedEmoticon} 
+                    imageList={imageList[emoticonIndex]}
+                    onClickMarket={this._onClickMarket}
+                  />
+                </Footer>
+                
+              </Viewer>
+            </Background>
+            {pageState === "chatRoom" && this.state.isOpen === false ?
+              <Intro>
+                <Logo src={EmoticboxLogo}/>
+                <IntroBoxTitle>이모틱박스의 이모티콘 솔루션이 채팅에 적용됐습니다!</IntroBoxTitle>
+                <IntroBoxBody>
+                  <IntroImage src={SearchImage}/> 이모티콘 목록을 호출하고 싶으시면 채팅앱의 <IntroImage src={Emoticon}/> 아이콘을 클릭해주세요.
+                </IntroBoxBody>
+              </Intro>
+            :
+              <Intro>
+                <Logo src={EmoticboxLogo}/>
+                <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
+                <IntroBoxBody>
+                  <IntroImage src={CheckImage}/> 채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
+                  {/* <IntroLink>
+                    <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
+                  </IntroLink> */}
+                  <IntroLink>
+                    <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
+                  </IntroLink>
+                </IntroBoxBody>
+                <IntroBoxBodySmall>
+                  <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 모든 이모티콘들은 제휴사에서 전부 사용할 수 있습니다.<br/>
+                  <IntroImageSmall src={CheckImageSmall}/> 해당 채팅 서비스의 운영 제휴사는 Emoticbox로 부터 해당 이모티콘의 판매건에 대한<br/>
+                  <IntroEmptySmall />수익의 10%를 분배받습니다.
+                </IntroBoxBodySmall>
+              </Intro>
+            }
+          </PageCenter>
         </Page>
       );
     } else {
       return (
         <Page>
-          <Title>EmoticBox Solution Demo</Title>
-          
-          <Background>
-            <Viewer>
-              <StoreView>
-                <img
-                    src={demoVideo}
-                    width = "100%"
-                    height = "598px"
-                />
-                {/* <StoreVideo src={demoVideo}>
-                </StoreVideo> */}
-              </StoreView>
-            </Viewer>
-          </Background>
-          <Intro>
-            <Logo src={EmoticboxLogo}/>
-            <IntroTitle>EmoticBox App</IntroTitle>
-            <IntroBody>앱을 통해 다양한 이모티콘들을 구매하고 관리할 수 있습니다.</IntroBody>
-            <ApplyButton onClick={this._onClickBuy}>이모티콘 구매완료</ApplyButton>
-          </Intro>
+            <PageCenter>
+            <Title>EmoticBox Solution Demo</Title>
+            
+            <Background>
+              <Viewer>
+                <StoreView>
+                  <img
+                      src={demoVideo}
+                      width = "100%"
+                      height = "598px"
+                  />
+                  {/* <StoreVideo src={demoVideo}>
+                  </StoreVideo> */}
+                </StoreView>
+              </Viewer>
+            </Background>
+            <Intro>
+              <Logo src={EmoticboxLogo}/>
+              <IntroTitle>EmoticBox App</IntroTitle>
+              <IntroBody>앱을 통해 다양한 이모티콘들을 구매하고 관리할 수 있습니다.</IntroBody>
+              <ApplyButton onClick={this._onClickBuy}>이모티콘 구매완료</ApplyButton>
+            </Intro>
+          </PageCenter>
         </Page>
       );
     }
   }
 }
+const PageCenter = styled.div`
+  width: 1920px;
+  margin: 0px auto;
+`
 const StoreView = styled.div`
   height: 598px;
   width: 100%;
