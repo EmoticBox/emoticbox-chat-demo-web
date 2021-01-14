@@ -11,6 +11,7 @@ import Search from './Img/search.png'
 import EmoticboxLogo from './Img/emoticBox_4x.png'
 import SearchImage from './Img/searchImage.png'
 import CheckImage from './Img/checkImage.png'
+import CheckImageSmall from './Img/checkImage2.png'
 import Shop from './Img/shop.png'
 
 // video
@@ -331,6 +332,11 @@ class App extends Component {
                   <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
                 </IntroLink>
               </IntroBoxBody>
+              <IntroBoxBodySmall>
+                <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 모든 이모티콘들은 제휴사에서 전부 사용할 수 있습니다.<br/>
+                <IntroImageSmall src={CheckImageSmall}/> 해당 채팅 서비스의 운영 제휴사는 Emoticbox로 부터 해당 이모티콘의 판매건에 대한<br/>
+                <IntroEmptySmall />수익의 10%를 분배받습니다.
+              </IntroBoxBodySmall>
             </Intro>
           }
         </Page>
@@ -343,11 +349,11 @@ class App extends Component {
           <Background>
             <Viewer>
               <StoreView>
-              <img
-                  src={demoVideo}
-                  width = "100%"
-                  height = "598px"
-              />
+                <img
+                    src={demoVideo}
+                    width = "100%"
+                    height = "598px"
+                />
                 {/* <StoreVideo src={demoVideo}>
                 </StoreVideo> */}
               </StoreView>
@@ -453,6 +459,17 @@ const IntroImage = styled.img`
   width: 15px;
   
 `
+const IntroImageSmall = styled.img`
+  
+  height: 8px;
+  width: 10px;
+  
+`
+const IntroEmptySmall = styled.div`
+  display: inline-block;
+  height: 8px;
+  width: 14px;
+`
 const IntroBoxTitle = styled.div`
   background: #FFFFFF;
   border: 1px solid #36BCD6;
@@ -478,6 +495,22 @@ const IntroBoxBody = styled.div`
   width: 100%;
   font-size: 17px;
   line-height: 35px;
+  text-align: left;
+  
+  font-weight: 400;
+  clear: both;
+`
+const IntroBoxBodySmall = styled.div`
+  background: #FFFFFF;
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+
+  padding: 14px 24px;
+  margin: 7.5px;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20.27px;
   text-align: left;
   
   font-weight: 400;

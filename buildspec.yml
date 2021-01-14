@@ -1,0 +1,17 @@
+    version: 0.2
+
+    phases:
+      install:
+        runtime-versions:
+          nodejs: 12 # 런타임 nodejs12으로 설정
+        commands:
+          - npm i npm@latest -g # npm 버전 업데이트
+      pre_build:
+        commands:
+          - npm ci # 빌드에 필요한 패키지 설치
+      build:
+        commands:
+          - npm run build # 빌드
+      post_build:
+        commands:
+          - aws s3 sync ./build $(echo s3://$FRONTEND_DEMO_CHAT_HOST) # 빌드 후 결과물을 버킷으로 업로드
