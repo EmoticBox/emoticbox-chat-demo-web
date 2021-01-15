@@ -13,7 +13,7 @@ import SearchImage from './Img/searchImage.png'
 import CheckImage from './Img/checkImage.png'
 import CheckImageSmall from './Img/checkImage2.png'
 import Shop from './Img/shop.png'
-
+import newEmoticonThm from './Emoticons/meatLove/tab_on.png'
 // video
 import ReactPlayer from 'react-player'
 import demoVideo from "./video/demo.gif";
@@ -329,7 +329,13 @@ class App extends Component {
             :
               <Intro>
                 <Logo src={EmoticboxLogo}/>
-                <IntroBoxBody><IntroImage src={CheckImage}/> &nbsp;<IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
+                <IntroBoxBody>
+                  {this.state.isMarketClick ? 
+                  <><IntroImage src={CheckImage}/> &nbsp;이모틱박스 스토어에서 구매하신 <IntroThm src={newEmoticonThm}/> 이모티콘은 메일 연동된 채팅창에서 바로 사용 가능합니다.</>
+                  :
+                  <><IntroImage src={CheckImage}/> &nbsp;<IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</>
+                  }
+                </IntroBoxBody>
                 <IntroBoxBody>
                   <IntroImage src={CheckImage}/> &nbsp;채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
                   {/* <IntroLink>
@@ -466,6 +472,10 @@ const IntroBody = styled.div`
   font-weight: 400;
   line-height: 24.62px;
 
+`
+const IntroThm = styled.img`
+  height: 20px;
+  width: 26px;
 `
 const IntroImage = styled.img`
   
