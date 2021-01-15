@@ -329,9 +329,9 @@ class App extends Component {
             :
               <Intro>
                 <Logo src={EmoticboxLogo}/>
-                <IntroBoxBody><IntroImage src={CheckImage}/> <IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
+                <IntroBoxBody><IntroImage src={CheckImage}/> &nbsp;<IntroImage src={Shop}/> 은 이모틱박스 스토어와 연결됩니다.</IntroBoxBody>
                 <IntroBoxBody>
-                  <IntroImage src={CheckImage}/> 채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
+                  <IntroImage src={CheckImage}/> &nbsp;채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
                   {/* <IntroLink>
                     <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
                   </IntroLink> */}
@@ -496,7 +496,7 @@ const IntroBoxTitle = styled.div`
   
   text-align: left;
   padding: 12px 24px;
-  margin: 7.5px;
+  margin: 7.5px 0px;
 `
 const IntroBoxBody = styled.div`
   background: #FFFFFF;
@@ -505,12 +505,12 @@ const IntroBoxBody = styled.div`
   border-radius: 10px;
 
   padding: 14px 24px;
-  margin: 7.5px;
+  
   width: 100%;
   font-size: 17px;
   line-height: 35px;
   text-align: left;
-  
+  margin: 7.5px 0px;
   font-weight: 400;
   clear: both;
 `
@@ -521,7 +521,7 @@ const IntroBoxBodySmall = styled.div`
   border-radius: 10px;
 
   padding: 14px 24px;
-  margin: 7.5px;
+  margin: 7.5px 0px;
   width: 100%;
   font-size: 14px;
   line-height: 20.27px;
