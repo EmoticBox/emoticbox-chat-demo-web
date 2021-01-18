@@ -11,6 +11,7 @@ import Search from './Img/search.png'
 import EmoticboxLogo from './Img/emoticBox_4x.png'
 import SearchImage from './Img/searchImage.png'
 import CheckImage from './Img/checkImage.png'
+import linkArrow from './Img/linkArrow.png'
 import CheckImageSmall from './Img/checkImage2.png'
 import Shop from './Img/shop.png'
 import newEmoticonThm from './Emoticons/meatLove/tab_on.png'
@@ -154,6 +155,7 @@ class App extends Component {
         isUser: true,
         date: (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`,
         emoticonId: selectedId,
+        emoticonName: this.state.emoticonList[emoticonIndex].name,
         emoticonIndex: emoticonIndex,
       }),
       message: '',
@@ -224,6 +226,11 @@ class App extends Component {
     })
     // this._getEmoticonList();
   }
+  _onClickConsult = () => {
+    this.setState({
+      pageState: "consult"
+    })
+  }
   _handleSelectedEmoticon= (index) => {
     // if (this.state.visible === true ) this._openCloseEmoticionView();
     this.setState({
@@ -274,7 +281,7 @@ class App extends Component {
                   <ChatList id="chatLog" ref={el => {this.el = el;}} onClick={this._closeEmoticionPreview}>
                     <Chats>
                       {messageList.map((item, index) => {
-                        console.log("messageList", item.emoticonIndex);
+                        
                         return (
                           <MessageBox
                             key={index}
@@ -282,7 +289,8 @@ class App extends Component {
                             isUser={item.isUser}
                             date={item.date}
                             emoticonId={item.emoticonId}
-                            emoticonName={item.emoticonId > 0 ? this.state.emoticonList[item.emoticonIndex].name : null}
+                            emoticonName={item.emoticonId > 0 ? item.emoticonName : null}
+                            // emoticonName={item.emoticonId > 0 ? this.state.emoticonList[item.emoticonIndex].name : null}
                           />
                         );
                       })}
@@ -318,6 +326,7 @@ class App extends Component {
                 
               </Viewer>
             </Background>
+            
             {pageState === "chatRoom" && this.state.isOpen === false ?
               <Intro>
                 <Logo src={EmoticboxLogo}/>
@@ -339,23 +348,45 @@ class App extends Component {
                 <IntroBoxBody>
                   <IntroImage src={CheckImage}/> &nbsp;채팅창의 환경(모바일,PC)에 따라 앱 또는 웹으로 접속합니다.
                   {/* <IntroLink>
-                    <IntroLinkText href="/">&lt; 이모틱박스 스토어 웹 살펴보기</IntroLinkText>
+                      <IntroArrowImage src={linkArrow}/> &nbsp;
+                    <IntroLinkText href="/">이모틱박스 스토어 웹 살펴보기</IntroLinkText>
                   </IntroLink> */}
                   <IntroLink>
-                    <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store" target="_blank">&lt; 이모틱박스 스토어 앱 살펴보기</IntroLinkText>
+                    <IntroArrowImage src={linkArrow}/> &nbsp;
+                    <IntroLinkText href="https://play.google.com/store/apps/details?id=com.emoticbox.store" target="_blank">
+                      이모틱박스 스토어 앱 살펴보기
+                    </IntroLinkText>
                   </IntroLink>
                 </IntroBoxBody>
-                <IntroBoxBodySmall>
+                <IntroBoxBody>
+                  <IntroImage src={CheckImage}/> &nbsp;단 4개의 API만을 귀사의 클라이언트에 적용하는 것으로 수만 개의 이모티콘을 사용할 수 있습니다.
+                  <IntroLink>
+                    <IntroArrowImage src={linkArrow}/> &nbsp;
+                    <IntroLinkText href="https://docs.developers.emoticbox.com" target="_blank">
+                      API Doc 살펴보기
+                    </IntroLinkText>
+                  </IntroLink>
+                </IntroBoxBody>
+                {/* <IntroBoxBody>
+                  <IntroImage src={CheckImage}/> &nbsp;도입 상담, 추가적인 사용방법이 궁금하시다면?
+                  <IntroLink>
+                    <IntroArrowImage src={linkArrow}/> &nbsp;
+                    <IntroLinkText onClick={this._onClickConsult}>
+                      상담 신청하기
+                    </IntroLinkText>
+                  </IntroLink>
+                </IntroBoxBody> */}
+                {/* <IntroBoxBodySmall>
                   <IntroImageSmall src={CheckImageSmall}/> 스토어에서 구매한 이모티콘들은 이모틱박스의 모든 제휴사에서 사용할 수 있습니다.<br/>
                   <IntroImageSmall src={CheckImageSmall}/> 해당 채팅 서비스의 운영 제휴사는 Emoticbox로 부터 해당 이모티콘의 판매건에 대한<br/>
                   <IntroEmptySmall />수익의 10%를 분배받습니다.
-                </IntroBoxBodySmall>
+                </IntroBoxBodySmall> */}
               </Intro>
             }
           </PageCenter>
         </Page>
       );
-    } else {
+    } else if (pageState === "market") {
       return (
         <Page>
             <PageCenter>
@@ -383,9 +414,111 @@ class App extends Component {
           </PageCenter>
         </Page>
       );
+    } else {
+      return (
+        <Page>
+          <Title>EmoticBox Solution Demo</Title>
+          <ConsultingCover>
+            <ConsultingForm>
+              <ConsultTitle>상담 신청</ConsultTitle>
+
+              <ConsultLabel><ConsultCheckIcon src={CheckImage}/>회사명</ConsultLabel>
+              <ConsultText></ConsultText>
+
+              <ConsultLabel><ConsultCheckIcon src={CheckImage}/>담당자명</ConsultLabel>
+              <ConsultText></ConsultText>
+
+              <ConsultLabel><ConsultCheckIcon src={CheckImage}/>연락처</ConsultLabel>
+              <ConsultText></ConsultText>
+
+              <ConsultLabel><ConsultCheckIcon src={CheckImage}/>이메일</ConsultLabel>
+              <ConsultText></ConsultText>
+              
+              <ConsultAgreeForm>
+                <ConsultCheckBox type="checkbox"></ConsultCheckBox>
+                <ConsultLinkText>개인정보 수집 이용 동의</ConsultLinkText>(필수)
+              <ConsultAgreeForm>
+              </ConsultAgreeForm>
+                <ConsultCheckBox type="checkbox"></ConsultCheckBox>
+                <ConsultLinkText>마케팅 수집 및 활용 동의</ConsultLinkText>(선택)
+              </ConsultAgreeForm>
+            </ConsultingForm>
+          </ConsultingCover>
+        </Page>
+      )
     }
   }
 }
+const ConsultingCover = styled.div`
+  display: flex;
+  justify-content: center;
+`
+const ConsultingForm = styled.div`
+  width: 594px;
+  height: 730px;
+  
+  padding: 37px; 51px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #ffffff;
+  border: 1px solid #36BCD6;
+  border-radius: 30px;
+`
+const ConsultTitle = styled.div`
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 43px;
+  color: #36BCD6;
+  margin-bottom: 30px;
+`
+const ConsultLabel = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 488px;
+  
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 25px;
+
+  margin-bottom: 5px;
+`
+const ConsultCheckIcon = styled.img`
+  height: 20px;
+  width: 20px;
+  margin: 0px 7px;
+`
+const ConsultText = styled.input`
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+  width: 488px;
+  height: 45px;
+  
+  padding: 0px 10px;
+  margin-bottom: 30px;
+`
+const ConsultAgreeForm = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  color: #36BCD6;
+`
+const ConsultLinkText = styled.span`
+  line-height: 17px;
+  text-decoration-line: underline;
+`
+const ConsultCheckBox = styled.input`
+  width: 15px;
+  height: 15px;
+  margin: 0px 10px;
+`
+
 const PageCenter = styled.div`
   width: 1920px;
   margin: 0px auto;
@@ -405,8 +538,17 @@ const IntroLink = styled.div`
   clear: both;
 `
 const IntroLinkText = styled.a`
+  font-size: 14px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 700;
+  
+  
+  :visited{
+    text-decoration:none;
+  }
+  color: #36BCD6;
   margin: 0px;
-  float: right;
 `
 const Preview = styled.div`
   margin: 0px 60px 70px 250px;
@@ -431,8 +573,7 @@ const Logo = styled.img`
   height: 18px;
   width: 92px;
   display: block;
-  margin: 170px 0px 18px 0px;
-  
+  margin: 0px 0px 12.5px 0px;
   object-fit: cover;
 `
 //background-image: url(${EmoticboxLogo}); 
@@ -451,9 +592,12 @@ const Title = styled.div`
 `
 // Intro
 const Intro = styled.div`
-  margin: 0px 240px 0px 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0px 150px;
   width: 600px;
-  height: 600px;
+  height: 650px;
   float: left;
   font-family: Noto Sans KR;
 `
@@ -481,6 +625,12 @@ const IntroImage = styled.img`
   
   height: 15px;
   width: 15px;
+  
+`
+const IntroArrowImage = styled.img`
+  margin: 0px 0px 0px 360px;
+  height: 11px;
+  width: 11px;
   
 `
 const IntroImageSmall = styled.img`

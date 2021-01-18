@@ -24,8 +24,8 @@ const EmoticonList = ({onClick, thmList, emoticonIndex, handleIndex, imageList, 
           <EmoticonBox>
             {imageList.map( (image) => 
               <EmoticonSet>
-                <EmoticonThm id="thm" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.thmnail} />
-                <EmoticonImg id="imgs" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '76px', padding: '2px'}} src={image.url} />
+                <EmoticonThm id="thm" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '72px', padding: '2px'}} src={image.thmnail} />
+                <EmoticonImg id="imgs" value={image.index} onClick={() => onClick(image.index)} autoPlay={true} style={{ height: '72px', padding: '2px'}} src={image.url} />
               </EmoticonSet>
             )}
           </EmoticonBox>
@@ -82,10 +82,10 @@ const EmoticonBox = styled.div`
 
   overflow-x: hidden;
   overflow-y: scroll;  
-  ::-webkit-scrollbar {
-    display: none;
-  };
 `
+// ::-webkit-scrollbar {
+//   display: none;
+// };
 const EmoticonTab = styled.div`
   width: 100%;
   height: 30px;

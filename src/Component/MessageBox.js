@@ -3,18 +3,30 @@ import styled from 'styled-components';
 import ApngComponent from 'react-apng';
 const MessageBox = ({message, isUser, date, emoticonId, emoticonName}) => {
   
-  if (Number(emoticonId) > 0){
+  // 이모티콘 발송
+  if (Number(emoticonId) > 0 ){
     const apic1 = require(`../Emoticons/${emoticonName}/${emoticonId}.png`);
-    return (
-      <Chat>
-          {/* <Icon/> */}
-          <MessageRight>
-              {/* <NickName>Emoticbox</NickName> */}
+    if (message !== "")
+      return (
+        <Chat>
+            {/* <Icon/> */}
+            <MessageRight>
+                {/* <NickName>Emoticbox</NickName> */}
+                <MessageForm><img autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
+                <Time>{date}</Time><MessageText>{message}</MessageText>
+            </MessageRight>
+        </Chat>
+      );
+    else
+        return (
+          <Chat>
+            <MessageRight>
               <MessageForm><Time>{date}</Time><img autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
-          </MessageRight>
-      </Chat>
-    );
+            </MessageRight>
+          </Chat>
+        )
   }
+  // 보낸 메세지
   else if (isUser === true){
     return (
       <Chat>
@@ -25,6 +37,7 @@ const MessageBox = ({message, isUser, date, emoticonId, emoticonName}) => {
           </MessageRight>
       </Chat>
     );
+  // 받은 메세지
   } else {
     return (
         <Chat>
