@@ -437,11 +437,12 @@ class App extends Component {
               <ConsultAgreeForm>
                 <ConsultCheckBox type="checkbox"></ConsultCheckBox>
                 <ConsultLinkText>개인정보 수집 이용 동의</ConsultLinkText>(필수)
-              <ConsultAgreeForm>
               </ConsultAgreeForm>
+              <ConsultAgreeForm>
                 <ConsultCheckBox type="checkbox"></ConsultCheckBox>
                 <ConsultLinkText>마케팅 수집 및 활용 동의</ConsultLinkText>(선택)
               </ConsultAgreeForm>
+              <ConsultButton>상담 예약</ConsultButton>
             </ConsultingForm>
           </ConsultingCover>
         </Page>
@@ -452,12 +453,13 @@ class App extends Component {
 const ConsultingCover = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 15px;
 `
 const ConsultingForm = styled.div`
   width: 594px;
   height: 730px;
   
-  padding: 37px; 51px;
+  
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -472,7 +474,7 @@ const ConsultTitle = styled.div`
   font-size: 30px;
   line-height: 43px;
   color: #36BCD6;
-  margin-bottom: 30px;
+  margin: 40px 0px 45px 0px;
 `
 const ConsultLabel = styled.div`
   display: flex;
@@ -504,9 +506,13 @@ const ConsultText = styled.input`
 const ConsultAgreeForm = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
 
   font-family: Noto Sans KR;
   font-size: 12px;
+  line-height: 17px;
+  margin: 5px 0px;
   color: #36BCD6;
 `
 const ConsultLinkText = styled.span`
@@ -516,9 +522,25 @@ const ConsultLinkText = styled.span`
 const ConsultCheckBox = styled.input`
   width: 15px;
   height: 15px;
-  margin: 0px 10px;
+  margin: 0px 10px 0px 210px;
 `
+const ConsultButton = styled.button`
+  display: block;
+  width: 370px;
+  height: 67px;
+  color: #ffffff;
+  
+  font-size: 20px;
+  line-height: 29px;
 
+  margin: 15px 0px 0px 0px;
+  background: #36BCD6;
+
+  border: 1px solid #36BCD6;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+`
 const PageCenter = styled.div`
   width: 1920px;
   margin: 0px auto;
@@ -542,7 +564,7 @@ const IntroLinkText = styled.a`
   font-family: Noto Sans KR;
   font-style: normal;
   font-weight: 700;
-  
+  text-decoration-line: underline;
   
   :visited{
     text-decoration:none;
@@ -707,6 +729,7 @@ const ApplyButton = styled.button`
   border-radius: 10px;
   outline: none;
 `
+
 // BackGround
 const Background = styled.div`
   margin: 0px 60px 200px 250px;
