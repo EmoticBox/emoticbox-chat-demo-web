@@ -736,12 +736,13 @@ const Background = styled.div`
   width: 650px;
   height: 650px;
   float: left;
+  background-position: 0px 30px;
+  background-repeat: no-repeat;
   background-image: url(${BackCircle});
 `
 // Viewer
 const Viewer = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  margin: 10px auto;
   width: 326px;
   height: 598px;  
   padding: 51px 12px;
