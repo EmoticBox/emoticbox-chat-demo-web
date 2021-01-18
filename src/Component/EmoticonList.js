@@ -76,13 +76,31 @@ const EmoticonIcon = styled.img`
   width: 26px;
 `
 const EmoticonBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   width: 100%;
   height: 190px;
   background: #ffffff;
 
   overflow-x: hidden;
   overflow-y: scroll;  
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: gray;
+  }
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
 `
+// background-color: #36BCD6;
 // ::-webkit-scrollbar {
 //   display: none;
 // };
