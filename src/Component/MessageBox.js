@@ -21,7 +21,7 @@ const MessageBox = ({message, isUser, date, emoticonId, emoticonName}) => {
         return (
           <Chat>
             <MessageRight>
-              <MessageForm><Time>{date}</Time><img autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} /></MessageForm>
+              <Time>{date}</Time><img autoPlay={true} style={{ height: '80px', padding: '5px'}} src={apic1} />
             </MessageRight>
           </Chat>
         )
@@ -44,7 +44,8 @@ const MessageBox = ({message, isUser, date, emoticonId, emoticonName}) => {
             {/* <Icon/> */}
             <MessageLeft>
                 {/* <NickName>Emoticbox</NickName> */}
-                <MessageForm><ExampleText>{message}</ExampleText><Time>{date}</Time></MessageForm>
+                <ExampleText>{message}</ExampleText><Time>{date}</Time>
+                {message === "어제 부탁드린 일은 완료됐나요?" ? <Margin> </Margin> : <></>}
             </MessageLeft>
         </Chat>
     );
@@ -78,19 +79,20 @@ const MessageRight = styled.div`
   text-align: right
 `
 const MessageForm = styled.p`
+  margin: 0px;
+  padding: 0px;
 `
 const Time = styled.span`
   font-family: Noto Sans KR;
   font-style: normal;
   font-weight: 500;
-  font-size: 8px;
+  font-size: 8px !important;
   line-height: 12px;
   color: rgba(0, 0, 0, 0.4);
   
   vertical-align: bottom;
   margin-left: 7px;
   margin-right: 7px;
-  font-size: 8px;
   text-align: center;
 `
 const ExampleText = styled.span`
@@ -101,7 +103,7 @@ const ExampleText = styled.span`
   margin: 0;
 
   max-width: 200px;
-  padding: 5px 10px;
+  padding: 4px 11px;
   text-align: left;
 
   font-family: Noto Sans KR;
@@ -111,21 +113,20 @@ const ExampleText = styled.span`
   line-height: 17px;
   
 
-  background-color: white;
-  border: 1px solid white;
+  background-color: #F7F7F7;
   border-radius: 3px;
-  box-shadow: 0 1px #aabcc5;
+  
 `
 const MessageText = styled.span`
   
   display: inline-block;
-  color: #ffffff;
+  color: #f7f7f7;
   
   word-break:break-all;
   margin: 0;
   
   max-width: 200px;
-  padding: 5px 10px;
+  padding: 4px 11px;
   text-align: left;
 
   font-family: Noto Sans KR;
@@ -133,14 +134,15 @@ const MessageText = styled.span`
   font-weight: 500;
   font-size: 12px;
   line-height: 17px;
-  letter-spacing: -0.333333px;
+
 
   background-color: #2DD5B2;
-  border: 1px solid #2DD5B2;
   border-radius: 3px;
-  box-shadow: 0 1px #aabcc5;
 `
-
+const Margin = styled.div`
+  width: 100%;
+  height: 35px;
+`
 const NickName = styled.div`
   display: block;
   font-size: 13px;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // images
 import PhoneImage from './Img/phone_mock_up.png'
 import BackCircle from './Img/back_circle.png'
-import BackPreview from './Img/back_preview.png'
+import BackPreview from './Img/preview.png'
 import Emoticon from './Img/emoticon.png'
 import Connections from './Img/connections.png'
 import Search from './Img/search.png'
@@ -15,6 +15,9 @@ import linkArrow from './Img/linkArrow.png'
 import CheckImageSmall from './Img/checkImage2.png'
 import Shop from './Img/shop.png'
 import newEmoticonThm from './Emoticons/meatLove/tab_on.png'
+import backButton from './Img/backButtons.png'
+import dotdotdot from './Img/dot3.png'
+import Time from './Img/Time.png'
 // video
 import ReactPlayer from 'react-player'
 import demoVideo from "./video/demo.gif";
@@ -38,13 +41,13 @@ class App extends Component {
       {
         message: "안녕하세요! 좋은 아침입니다~",
         isUser: false,
-        date: '오전 07:30',
+        date: '',
         // (date.getHours() > 12) ? `오후 ${date.getHours() - 12}:${this._formatMinutes(date.getMinutes())}` : `오전 ${date.getHours()}:${this._formatMinutes(date.getMinutes())}`
       },
       {
         message: "어제 부탁드린 일은 완료됐나요?",
         isUser: false,
-        date: '오전 07:31',
+        date: '오전 10:02',
       },
     ],
     isMarketClick: false,
@@ -265,15 +268,15 @@ class App extends Component {
               <Viewer>
                 <Header>
                   <LineA>
-                    <LabelTime>9:45</LabelTime>
-                    <ConnectionIcons/>
+                    <LabelTime src={Time}/>
+                    <ConnectionIcons src={Connections}/>
                   </LineA>
                   
                   <LineB onClick={() => {this._onClickBack()}}>
-                    <Arrows>&lt;</Arrows>
-                    <LabelLeft>Emoticbox</LabelLeft>
-                    <LabelRight>...</LabelRight>
-                    <SearchIcon/>
+                    <Arrows><BackImage src={backButton}/></Arrows>
+                    {/* <LabelLeft>Emoticbox</LabelLeft> */}
+                    <LabelRight src={dotdotdot}/>
+                    <SearchIcon src={Search}/>
                   </LineB>
                 </Header>
 
@@ -757,15 +760,12 @@ const Header = styled.div`
   margin: 0px;
   border-radius: 7px 7px 0px 0px;
 `
-const LabelTime = styled.div`
-  color:#F2F2F2;
-  margin: 0px;
-  text-align: center;
-  float:left;
-  margin: 10px 10px 10px 20px;
-  font-family: SF Pro Text;
-  font-size: 15px;
-  line-height: 18px;
+const LabelTime = styled.img`
+  object-fit: contain;
+  float: left;
+  height: 11.6px;
+  width: 35px;
+  margin: 15px 20px 10px 17px;
 `
 const LabelLeft= styled.div`
   color:#F2F2F2;
@@ -778,12 +778,13 @@ const LabelLeft= styled.div`
   line-height: 18px;
 `
 // Connection Icons
-const ConnectionIcons = styled.div`
+const ConnectionIcons = styled.img`
   width: 68px;
   height: 16px;
-  background-image: url(${Connections});
-  margin: 10px 10px 10px 10px;
-  float:right;
+  object-fit: contain;
+  margin: 14px 17px 10px 0px;
+  float: right;
+  
 `
 
 // Lines
@@ -792,27 +793,28 @@ const LineA = styled.div`
 const LineB = styled.div`
   clear: both;
 `
-const LabelRight = styled.div`
-  color:#F2F2F2;
-  margin: 0px;
-  text-align: center;
-  float:right;
-  margin: 3px 20px 10px 0px;
-  font-size: 16px;
-  line-height: 20px;
-`
-const SearchIcon = styled.div`
-  width: 12px;
-  height: 12px;
+const LabelRight = styled.img`
+  object-fit: contain;
   float: right;
-  margin: 10px;
-  background-image: url(${Search})
+  width: 13px;
+  height: 18px;
+  
+  margin: 3px 20px 10px 0px;
+`
+const SearchIcon = styled.img`
+  object-fit: contain;
+  width: 13.5px;
+  height: 13.5px;
+  float: right;
+  margin: 5px 6px;
+  
+`
+const BackImage = styled.img`
+  height: 22px;
+  width: 97px;
 `
 const Arrows = styled.div`
-  color: #f2f2f2;
-  font-size: 20px;
-  line-height: 18px;
-  margin: 10px 10px 10px 20px;
+  margin: 0px 20px;
   float: left;
 `
 
@@ -820,7 +822,8 @@ const Arrows = styled.div`
 const Section = styled.div`
   width: 100%;
   height: 480px;
-  padding-top: 10px;
+  padding-top: 28px;
+  padding-left: 1px;
   background: #F2F2F2;
 `
 const ChatList = styled.div`
@@ -836,8 +839,10 @@ const ChatList = styled.div`
   };
 `
 const Chats = styled.ul`
+  font-size: 0;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
   list-style: none;
-
   margin: 0px;
   padding: 0px;
   pointer-events: none;
