@@ -653,7 +653,7 @@ const IntroImage = styled.img`
   
 `
 const IntroArrowImage = styled.img`
-  margin: 0px 0px 0px 360px;
+  margin: 0px 0px 0px 300px;
   height: 11px;
   width: 11px;
   
